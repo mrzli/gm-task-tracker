@@ -1,5 +1,11 @@
 import React from 'react';
+import { CssBaseline } from '@material-ui/core';
 
 export function App(): React.ReactElement {
-  return <div>App</div>;
+  return (
+    <>
+      <CssBaseline />
+      <div>App</div>
+    </>
+  );
 }
