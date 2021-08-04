@@ -4,7 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { AppAction } from './app-action';
 import { actionGenericNoop } from './generic-action';
 import { AppState } from './app-state';
-import { AppDependencies } from '../../app-setup/app-dependencies';
+import { AppDependencies } from '../../setup/app-dependencies';
 import { createExampleEpic } from '../example/example-epics';
 
 export type AppEpic = Epic<AppAction, AppAction, AppState, AppDependencies>;

@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux';
-import { AppActionBase } from '../store/base/app-action-base';
+import { AppActionBase } from '../app/store/base/app-action-base';
 import { useDispatch } from 'react-redux';
 import { useMemo } from 'react';
-import { AppActionType } from '../store/base/app-action-type';
+import { AppActionType } from '../app/store/base/app-action-type';
 
 export function useAppActions<TActionContainer>(
   createActionsFn: (

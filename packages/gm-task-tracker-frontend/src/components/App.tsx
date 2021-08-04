@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { CssBaseline } from '@material-ui/core';
-import { AppState } from '../store/base/app-state';
-import { ExampleState } from '../store/example/example-state';
+import { AppState } from '../app/store/base/app-state';
+import { ExampleState } from '../app/store/example/example-state';
 import { useSelector } from 'react-redux';
 import { useAppActions } from '../utils/hooks';
-import { createExampleActions } from '../store/example/example-actions';
+import { createExampleActions } from '../app/store/example/example-actions';
 
 export function App(): React.ReactElement {
   const exampleState = useSelector<AppState, ExampleState>(

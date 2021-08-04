@@ -1,6 +1,6 @@
 import { AppEpic } from '../base/app-epic';
 import { combineEpics } from 'redux-observable';
-import { AppDependencies } from '../../app-setup/app-dependencies';
+import { AppDependencies } from '../../setup/app-dependencies';
 import {
   actionExampleGetPieceOfInformationFulfilled,
   actionExampleGetPieceOfInformationPending,

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from '../components/App';
+import { App } from '../../components/App';
 import { wrapComponent } from './create-app-utils';
 import { createAppDependencies } from './app-dependencies';
 import { createInitialAppState } from '../store/base/app-state';

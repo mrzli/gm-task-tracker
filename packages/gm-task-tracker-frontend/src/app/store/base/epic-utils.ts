@@ -10,7 +10,7 @@ import {
 } from 'rxjs';
 import { AppAction } from './app-action';
 import { AppState } from './app-state';
-import { AppDependencies } from '../../app-setup/app-dependencies';
+import { AppDependencies } from '../../setup/app-dependencies';
 
 export type TType<T extends AppAction> = T['type'];
 export type TPayload<T extends AppAction> = T['payload'];

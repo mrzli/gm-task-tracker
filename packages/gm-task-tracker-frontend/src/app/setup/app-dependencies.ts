@@ -1,5 +1,5 @@
-import { AppApi, createAppApi } from '../api/backend/base/app';
-import { LocalStorageKey } from '../api/browser/local-storage-key';
+import { AppApi, createAppApi } from '../api/base/app';
+import { LocalStorageKey } from '../browser/local-storage-key';
 import {
   CookieWrapper,
   createCookieWrapper,
@@ -7,8 +7,8 @@ import {
   createSessionStorageWrapper,
   StorageWrapper,
 } from '@mrzli/gm-js-libraries-browser-utils';
-import { CookieKey } from '../api/browser/cookie-key';
-import { SessionStorageKey } from '../api/browser/session-storage-key';
+import { CookieKey } from '../browser/cookie-key';
+import { SessionStorageKey } from '../browser/session-storage-key';
 
 export interface AppDependencies {
   readonly api: AppApi;
