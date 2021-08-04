@@ -3,8 +3,13 @@ module.exports = {
   parserOptions: {
     project: ['tsconfig.json'],
   },
-  plugins: ['prettier'],
-  extends: ['react-app', 'react-app/jest', 'plugin:prettier/recommended'],
+  plugins: ['react-hooks', 'prettier'],
+  extends: [
+    'react-app',
+    'react-app/jest',
+    'plugin:prettier/recommended',
+    'plugin:react-hooks/recommended',
+  ],
   rules: {
     '@typescript-eslint/explicit-function-return-type': [
       'error',
