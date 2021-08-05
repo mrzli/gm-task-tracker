@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { emptyFn } from '@mrzli/gm-js-libraries-utilities/function';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('api');
   await app.listen(4000);
 }
-bootstrap();
+
+bootstrap().finally(emptyFn);
