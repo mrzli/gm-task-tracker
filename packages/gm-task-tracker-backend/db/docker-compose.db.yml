@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3-buster
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_DB: database_development
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - ../../../data/db-data:/var/lib/postgresql/data
+    networks:
+      - gm-task-tracker-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+networks:
+  gm-task-tracker-network:
+    driver: bridge
