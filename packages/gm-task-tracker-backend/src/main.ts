@@ -1,11 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { emptyFn } from '@mrzli/gm-js-libraries-utilities/function';
-import { config as configDotEnv } from 'dotenv';
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 import { getAppEnv } from './utils/app-env';
 import { parseInteger } from '@mrzli/gm-js-libraries-utilities/number';
 
-configDotEnv();
+function setupEnv(): void {
+  const env = dotenv.config();
+  dotenvExpand(env);
+}
+
+setupEnv();
 
 async function bootstrap(): Promise<void> {
   const env = getAppEnv();
