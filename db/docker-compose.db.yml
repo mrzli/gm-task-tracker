@@ -5,15 +5,15 @@ services:
     ports:
       - "15432:5432"
     environment:
-      POSTGRES_DB: database_development
+      POSTGRES_DB: task_tracker_dev
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
     volumes:
-      - ../../../data/db-data:/var/lib/postgresql/data
+      - ../data/db-data:/var/lib/postgresql/data
     networks:
       - gm-task-tracker-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user"]
+      test: ["CMD-SHELL", "pg_isready --username=user --dbname=task_tracker_dev"]
       interval: 10s
       timeout: 5s
       retries: 5
