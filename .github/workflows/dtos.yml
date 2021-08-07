@@ -1,0 +1,53 @@
+name: dtos
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Latest Commit
+        uses: actions/checkout@v2
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: 'packages/dtos/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('packages/dtos/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          registry-url: https://npm.pkg.github.com/
+      - name: Install Node Modules
+        run: |
+          cd packages/dtos
+          npm ci
+        env:
+          GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint
+        run: |
+          cd packages/dtos
+          npm run lint
+          npm run prettier
+#      - name: Test
+#        run: |
+#          cd packages/dtos
+#          npm run test:ci
+      - name: Build Project
+        run: |
+          cd packages/dtos
+          npm run build
+      - name: Prepare for Publish
+        run: |
+          cd packages/dtos
+          echo "registry=https://npm.pkg.github.com/@mrzli" > .npmrc
+      - name: Publish
+        run: |
+          cd packages/dtos/dist
+          cp ../package.json .
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
