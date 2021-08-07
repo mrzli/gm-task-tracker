@@ -15,8 +15,7 @@
     "prettier": "prettier --check .",
     "prettier:write": "prettier --write ."
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "16.4.7",
     "@typescript-eslint/eslint-plugin": "4.28.5",
