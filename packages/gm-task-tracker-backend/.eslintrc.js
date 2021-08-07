@@ -22,6 +22,7 @@ module.exports = {
         allowExpressions: true,
       },
     ],
+    '@typescript-eslint/explicit-member-accessibility': 'error',
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {

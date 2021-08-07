@@ -5,7 +5,7 @@ import { AppEnv, getAppEnv } from '../../utils/app-env';
 export class ConfigService {
   private readonly appEnv: AppEnv;
 
-  constructor() {
+  public constructor() {
     this.appEnv = getAppEnv();
   }
 
