@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { Task } from '@prisma/client';
 import { TaskService } from './task.service';
+import { Task } from '@mrzli/gm-task-tracker-dtos/task/task';
 
 @Controller({ path: 'task' })
 export class TaskController {
@@ -8,6 +8,7 @@ export class TaskController {
 
   @Get('')
   public async getTasks(): Promise<readonly Task[]> {
-    return this.taskService.getTasks();
+    const result = await this.taskService.getTasks();
+    return result.map((item) => ({ id: item.id, text: item.text }));
   }
 }
