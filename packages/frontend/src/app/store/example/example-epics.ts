@@ -12,7 +12,7 @@ import { apiRequestHandler } from '../base/epic-utils';
 import { Observable } from 'rxjs';
 import { AppAction } from '../base/app-action';
 
-const epicDashboardGetDashboardData: AppEpic = (
+const epicExampleGetPieceOfInformation: AppEpic = (
   action$,
   state$,
   dependencies: AppDependencies
@@ -31,6 +31,6 @@ const epicDashboardGetDashboardData: AppEpic = (
 };
 
 export function createExampleEpic(): AppEpic {
-  const epicList: readonly AppEpic[] = [epicDashboardGetDashboardData];
+  const epicList: readonly AppEpic[] = [epicExampleGetPieceOfInformation];
   return combineEpics(...epicList);
 }

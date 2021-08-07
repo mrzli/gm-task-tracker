@@ -7,4 +7,11 @@ export enum AppActionType {
   ExampleGetPieceOfInformationFulfilled = 'ExampleGetPieceOfInformationFulfilled',
   ExampleGetPieceOfInformationRejected = 'ExampleGetPieceOfInformationRejected',
   // example end
+
+  // example start
+  TaskGetTasks = 'TaskGetTasks',
+  TaskGetTasksPending = 'TaskGetTasksPending',
+  TaskGetTasksFulfilled = 'TaskGetTasksFulfilled',
+  TaskGetTasksRejected = 'TaskGetTasksRejected',
+  // example end
 }

@@ -23,7 +23,7 @@ export interface ApiRequestHandlerInputData<
   readonly actionPending: (payload: TPayload<T>) => AppAction;
   readonly apiMethod: (payload: TPayload<T>) => Promise<ApiResponseData>;
   readonly actionFulfilled: ApiRequestFulfilledHandler<T, ApiResponseData>;
-  readonly actionRejected: (error: any) => AppAction;
+  readonly actionRejected: (error: unknown) => AppAction;
   readonly state$: StateObservable<AppState>;
   readonly dependencies: AppDependencies;
 }

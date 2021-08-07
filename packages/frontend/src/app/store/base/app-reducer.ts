@@ -1,13 +1,13 @@
 import { ReducersMapObject } from 'redux';
 import { AppState } from './app-state';
 import { exampleReducer } from '../example/example-reducer';
-import { AppActionExample } from '../example/example-actions';
+import { taskReducer } from '../task/task-reducer';
 
-export function createAppReducer(): ReducersMapObject<
-  AppState,
-  AppActionExample
-> {
+// TODO GM: find a better typing for this
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createAppReducer(): ReducersMapObject<AppState, any> {
   return {
     example: exampleReducer,
+    task: taskReducer,
   };
 }

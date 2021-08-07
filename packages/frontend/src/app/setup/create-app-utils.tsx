@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import { AppState } from '../store/base/app-state';
 import { wrapWithTheme } from './create-app-theme';
+import { AppAction } from '../store/base/app-action';
 
 export function wrapComponent(
   component: React.ReactElement,
   appContextData: AppContextData,
-  store: Store<AppState, any>,
+  store: Store<AppState, AppAction>,
   theme: Theme,
   useMemoryRouter: boolean,
   initialLocationForMemoryRouter: string

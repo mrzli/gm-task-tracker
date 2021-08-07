@@ -6,12 +6,14 @@ import { actionGenericNoop } from './generic-action';
 import { AppState } from './app-state';
 import { AppDependencies } from '../../setup/app-dependencies';
 import { createExampleEpic } from '../example/example-epics';
+import { createTaskEpic } from '../task/task-epics';
 
 export type AppEpic = Epic<AppAction, AppAction, AppState, AppDependencies>;
 
 export function createAppEpic(): AppEpic {
   const combinedEpics = combineEpics<AppAction, AppAction, AppState>(
-    createExampleEpic()
+    createExampleEpic(),
+    createTaskEpic()
   );
   return (action$, store$, dependencies) =>
     combinedEpics(action$, store$, dependencies).pipe(

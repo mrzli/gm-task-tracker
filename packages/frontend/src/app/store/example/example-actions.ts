@@ -1,13 +1,14 @@
 import { Dispatch } from 'redux';
 import { AppActionType } from '../base/app-action-type';
 import { AppActionBase } from '../base/app-action-base';
+import { AppAction } from '../base/app-action';
 
 export interface ExampleActions {
   readonly getPieceOfInformation: () => void;
 }
 
 export function createExampleActions(
-  dispatch: Dispatch<AppActionBase>
+  dispatch: Dispatch<AppAction>
 ): ExampleActions {
   return {
     getPieceOfInformation: () => dispatch(actionExampleGetPieceOfInformation()),

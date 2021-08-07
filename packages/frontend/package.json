@@ -20,6 +20,7 @@
     "@material-ui/lab": "5.0.0-alpha.41",
     "@mrzli/gm-js-libraries-browser-utils": "1.0.0",
     "@mrzli/gm-js-libraries-utilities": "1.0.11",
+    "@mrzli/gm-task-tracker-dtos": "1.0.0",
     "axios": "0.21.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
