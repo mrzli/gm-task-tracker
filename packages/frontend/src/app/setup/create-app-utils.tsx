@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { AppContextData, AppContext } from './app-context';
 import { Theme } from '@material-ui/core';
 import { Provider } from 'react-redux';
@@ -12,37 +11,13 @@ export function wrapComponent(
   component: React.ReactElement,
   appContextData: AppContextData,
   store: Store<AppState, AppAction>,
-  theme: Theme,
-  useMemoryRouter: boolean,
-  initialLocationForMemoryRouter: string
+  theme: Theme
 ): React.ReactElement {
-  const routerWrappedComponent = getRouterWrappedComponent(
-    component,
-    useMemoryRouter,
-    initialLocationForMemoryRouter
-  );
-
-  const themeWrappedComponent = wrapWithTheme(routerWrappedComponent, theme);
+  const themeWrappedComponent = wrapWithTheme(component, theme);
 
   return (
     <AppContext.Provider value={appContextData}>
       <Provider store={store}>{themeWrappedComponent}</Provider>
     </AppContext.Provider>
   );
-}
-
-function getRouterWrappedComponent(
-  component: React.ReactElement,
-  isForTest: boolean,
-  initialLocationForTest: string
-): React.ReactElement {
-  if (isForTest) {
-    return (
-      <MemoryRouter initialEntries={[initialLocationForTest]}>
-        {component}
-      </MemoryRouter>
-    );
-  } else {
-    return <BrowserRouter>{component}</BrowserRouter>;
-  }
 }

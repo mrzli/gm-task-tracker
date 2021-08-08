@@ -29,9 +29,7 @@ export function createApp(): React.ReactElement {
     component,
     appAllParameters.appContextData,
     appAllParameters.store,
-    appAllParameters.theme,
-    false,
-    ''
+    appAllParameters.theme
   );
 }
 
