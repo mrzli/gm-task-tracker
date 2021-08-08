@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { useAppActions } from '../utils/hooks';
 import { createExampleActions } from '../app/store/example/example-actions';
 import { TaskMainView } from './task/TaskMainView';
+import { ScreenRoutes } from './base/ScreenRoutes';
 
 export function App(): React.ReactElement {
   const exampleState = useSelector<AppState, ExampleState>(
@@ -24,6 +25,7 @@ export function App(): React.ReactElement {
       <div>
         <h1>App</h1>
         <div>{exampleState.pieceOfInformation}</div>
+        <ScreenRoutes />
         <TaskMainView />
       </div>
     </>

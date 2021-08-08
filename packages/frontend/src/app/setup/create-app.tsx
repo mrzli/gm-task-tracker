@@ -9,7 +9,11 @@ import { createAppGlobals } from './app-globals';
 import { reportWebVitals } from './report-web-vitals';
 
 export function createApp(): React.ReactElement {
-  const component = <App />;
+  const component = (
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
 
   const dependencies = createAppDependencies();
   const globals = createAppGlobals();
