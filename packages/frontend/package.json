@@ -19,7 +19,7 @@
     "@material-ui/icons": "5.0.0-beta.1",
     "@material-ui/lab": "5.0.0-alpha.41",
     "@mrzli/gm-js-libraries-browser-utils": "1.0.0",
-    "@mrzli/gm-js-libraries-navigation-utils": "1.0.2",
+    "@mrzli/gm-js-libraries-navigation-utils": "1.0.3",
     "@mrzli/gm-js-libraries-utilities": "1.0.13",
     "@mrzli/gm-task-tracker-dtos": "1.0.0",
     "axios": "0.21.1",

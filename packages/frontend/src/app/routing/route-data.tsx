@@ -22,6 +22,7 @@ const DEFAULT_ROUTE_INDEX = 0;
 export const ROUTE_DATA: readonly RouteItem[] = [
   {
     ...(EXPLICIT_ROUTES[DEFAULT_ROUTE_INDEX] as RouteItem),
+    label: 'Home',
     url: '/',
     exact: true,
   },
