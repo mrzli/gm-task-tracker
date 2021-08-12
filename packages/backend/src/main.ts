@@ -3,7 +3,7 @@ import { AppModule } from './modules/app/app.module';
 import { emptyFn } from '@mrzli/gm-js-libraries-utilities/function';
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
-import { getAppEnv } from './utils/app-env';
+import { getAppEnv } from './modules/config/app-env';
 import { parseInteger } from '@mrzli/gm-js-libraries-utilities/number';
 import { DatabaseService } from './modules/database/database.service';
 import helmet from 'helmet';

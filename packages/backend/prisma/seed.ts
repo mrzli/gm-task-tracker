@@ -1,7 +1,7 @@
 import { PrismaClient, Role, User } from '@prisma/client';
 import { padNonNegativeIntWithZeroes } from '@mrzli/gm-js-libraries-utilities/number';
 import { fillArrayOfLengthWithValueMapper } from '@mrzli/gm-js-libraries-utilities/array';
-import { hashPassword } from '../src/utils/password-utils';
+import { createAuthUtils } from '../src/modules/auth/auth-utils';
 
 const prisma = new PrismaClient();
 const SALT_ROUNDS = 12; // warning, should be the same as in env variable
@@ -22,6 +22,8 @@ const USER_IDS: readonly number[] = fillArrayOfLengthWithValueMapper(
   3,
   (index) => index + 1
 );
+
+const authUtils = createAuthUtils();
 
 async function execute(prisma: PrismaClient): Promise<void> {
   await prisma.task.deleteMany();
@@ -96,5 +98,5 @@ function generateUserEmail(id: number): string {
 
 async function generateUserPassword(id: number): Promise<string> {
   const plainTextPassword = `pass${padNonNegativeIntWithZeroes(id, 1)}`;
-  return hashPassword(plainTextPassword, SALT_ROUNDS);
+  return authUtils.hashPassword(plainTextPassword, SALT_ROUNDS);
 }

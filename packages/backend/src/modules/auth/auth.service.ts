@@ -1,11 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserService } from '../user/user.service';
-import { checkPassword } from '../../utils/password-utils';
+import { AuthUtils } from './auth-utils';
+import { ProviderKeyAuth } from './provider-key-auth';
 
 @Injectable()
 export class AuthService {
-  public constructor(private readonly userService: UserService) {}
+  public constructor(
+    @Inject(ProviderKeyAuth.PROVIDER_KEY_AUTH_UTILS)
+    private readonly authUtils: AuthUtils,
+    private readonly userService: UserService
+  ) {}
 
   public async validateUser(
     email: string,
@@ -16,7 +21,10 @@ export class AuthService {
       return undefined;
     }
 
-    const isPasswordMatch = await checkPassword(password, user.password);
+    const isPasswordMatch = await this.authUtils.checkPassword(
+      password,
+      user.password
+    );
     return isPasswordMatch ? user : undefined;
   }
 }

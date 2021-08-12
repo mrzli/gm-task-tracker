@@ -1,0 +1,3 @@
+export enum ProviderKeyConfig {
+  PROVIDER_KEY_CONFIG_APP_ENV = 'PROVIDER_KEY_CONFIG_APP_ENV',
+}
