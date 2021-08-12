@@ -1,0 +1,39 @@
+import { Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { ConfigService } from '../config/config.service';
+import { GOOGLE_SCOPES, GOOGLE_STRATEGY_NAME } from './google';
+
+const GoogleStrategy = PassportStrategy(Strategy, GOOGLE_STRATEGY_NAME);
+
+@Injectable()
+export class AuthService {
+  private strategy: Strategy;
+
+  public constructor(private readonly configService: ConfigService) {
+    const env = configService.getAppEnv();
+    this.strategy = new GoogleStrategy({
+      clientID: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_SECRET,
+      callbackURL: env.GOOGLE_CALLBACK_URL,
+      scope: GOOGLE_SCOPES,
+    });
+  }
+
+  public async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+    done: VerifyCallback
+  ): Promise<void> {
+    const { name, emails, photos } = profile;
+    const user = {
+      email: emails[0].value,
+      firstName: name.givenName,
+      lastName: name.familyName,
+      picture: photos[0].value,
+      accessToken,
+    };
+    done(null, user);
+  }
+}

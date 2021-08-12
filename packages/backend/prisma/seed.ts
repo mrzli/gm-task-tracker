@@ -1,20 +1,34 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role, User } from '@prisma/client';
+import { padNonNegativeIntWithZeroes } from '@mrzli/gm-js-libraries-utilities/number';
+import { fillArrayOfLengthWithValueMapper } from '@mrzli/gm-js-libraries-utilities/array';
 
 const prisma = new PrismaClient();
+
+execute(prisma)
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 
 const PERMISSIONS: readonly string[] = ['USER', 'ADMIN'];
 const ROLES: readonly string[] = ['USER', 'ADMIN'];
 
-const USERS: readonly string[] = ['example@example.com'];
+const USERS: readonly string[] = fillArrayOfLengthWithValueMapper(
+  3,
+  (index) => `u${padNonNegativeIntWithZeroes(index + 1, 1)}@e.com`
+);
 
-async function execute(): Promise<void> {
+async function execute(prisma: PrismaClient): Promise<void> {
+  await prisma.task.deleteMany();
+
+  await prisma.rolePermission.deleteMany();
+  await prisma.userRole.deleteMany();
   await prisma.user.deleteMany();
   await prisma.role.deleteMany();
   await prisma.permission.deleteMany();
-  await prisma.userRole.deleteMany();
-  await prisma.rolePermission.deleteMany();
-
-  await prisma.task.deleteMany();
 
   const permissions = await Promise.all(
     PERMISSIONS.map((permission) =>
@@ -42,32 +56,31 @@ async function execute(): Promise<void> {
     )
   );
 
-  await prisma.userRole.createMany({
-    data: [
-      { userId: users[0].id, roleId: roles[0].id },
-      { userId: users[0].id, roleId: roles[1].id },
-    ],
-  });
-
-  await prisma.task.createMany({
-    data: [
-      {
-        userId: users[0].id,
-        text: 'task 001',
-      },
-      {
-        userId: users[0].id,
-        text: 'task 002',
-      },
-    ],
-  });
+  await Promise.all(users.map((user) => createExampleDataForUser(user, roles)));
 }
 
-execute()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+async function createExampleDataForUser(
+  user: User,
+  roles: readonly Role[]
+): Promise<void> {
+  await Promise.all([
+    prisma.userRole.createMany({
+      data: [
+        { userId: user.id, roleId: roles[0].id },
+        { userId: user.id, roleId: roles[1].id },
+      ],
+    }),
+    prisma.task.createMany({
+      data: [
+        {
+          userId: user.id,
+          text: 'task 001',
+        },
+        {
+          userId: user.id,
+          text: 'task 002',
+        },
+      ],
+    }),
+  ]);
+}

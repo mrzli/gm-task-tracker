@@ -7,6 +7,9 @@ export interface AppEnv {
   readonly DB_USER: string;
   readonly DB_PASS: string;
   readonly DB_URL: string;
+  readonly GOOGLE_CLIENT_ID: string;
+  readonly GOOGLE_SECRET: string;
+  readonly GOOGLE_CALLBACK_URL: string;
 }
 
 export function getAppEnv(): AppEnv {
@@ -19,5 +22,8 @@ export function getAppEnv(): AppEnv {
     DB_USER: process.env['DB_USER'] ?? '',
     DB_PASS: process.env['DB_PASS'] ?? '',
     DB_URL: process.env['DB_URL'] ?? '',
+    GOOGLE_CLIENT_ID: process.env['GOOGLE_CLIENT_ID'] ?? '',
+    GOOGLE_SECRET: process.env['GOOGLE_SECRET'] ?? '',
+    GOOGLE_CALLBACK_URL: process.env['GOOGLE_CALLBACK_URL'] ?? '',
   };
 }
