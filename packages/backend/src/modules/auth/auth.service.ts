@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { AuthToken, User } from '@prisma/client';
 import { UserService } from '../user/user.service';
 import { AuthUtils } from './auth-utils';
 import { ProviderKeyAuth } from './provider-key-auth';
@@ -16,7 +16,7 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<User | undefined> {
-    const user = await this.userService.findOne(email);
+    const user = await this.userService.findUser(email);
     if (!user) {
       return undefined;
     }
@@ -26,5 +26,10 @@ export class AuthService {
       user.password
     );
     return isPasswordMatch ? user : undefined;
+  }
+
+  public async createAuthToken(user: User): Promise<AuthToken> {
+    const token = this.authUtils.generateAccessToken();
+    return this.userService.createAccessToken(user.id, token);
   }
 }

@@ -9,11 +9,12 @@ generator client {
 }
 
 model User {
-  id       Int        @id @default(autoincrement())
-  email    String     @unique @db.VarChar(256)
-  password String     @db.VarChar(256)
-  roles    UserRole[]
-  tasks    Task[]
+  id         Int         @id @default(autoincrement())
+  email      String      @unique @db.VarChar(256)
+  password   String      @db.VarChar(256)
+  roles      UserRole[]
+  tasks      Task[]
+  authTokens AuthToken[]
 }
 
 model UserRole {
@@ -45,6 +46,14 @@ model Permission {
   id    Int              @id @default(autoincrement())
   name  String           @db.VarChar(128)
   roles RolePermission[]
+}
+
+model AuthToken {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  token          String   @unique @db.Char(40)
+  expirationDate DateTime
 }
 
 model Task {
