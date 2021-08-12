@@ -6,9 +6,10 @@ import { DatabaseService } from '../database/database.service';
 export class UserService {
   public constructor(private readonly databaseService: DatabaseService) {}
 
-  public async findOne(email: string): Promise<User | null> {
-    return this.databaseService.prismaClient.user.findUnique({
+  public async findOne(email: string): Promise<User | undefined> {
+    const result = await this.databaseService.prismaClient.user.findUnique({
       where: { email },
     });
+    return result ?? undefined;
   }
 }

@@ -1,8 +1,10 @@
 import { PrismaClient, Role, User } from '@prisma/client';
 import { padNonNegativeIntWithZeroes } from '@mrzli/gm-js-libraries-utilities/number';
 import { fillArrayOfLengthWithValueMapper } from '@mrzli/gm-js-libraries-utilities/array';
+import { hashPassword } from '../src/utils/password-utils';
 
 const prisma = new PrismaClient();
+const SALT_ROUNDS = 12; // warning, should be the same as in env variable
 
 execute(prisma)
   .catch((e) => {
@@ -16,9 +18,9 @@ execute(prisma)
 const PERMISSIONS: readonly string[] = ['USER', 'ADMIN'];
 const ROLES: readonly string[] = ['USER', 'ADMIN'];
 
-const USERS: readonly string[] = fillArrayOfLengthWithValueMapper(
+const USER_IDS: readonly number[] = fillArrayOfLengthWithValueMapper(
   3,
-  (index) => `u${padNonNegativeIntWithZeroes(index + 1, 1)}@e.com`
+  (index) => index + 1
 );
 
 async function execute(prisma: PrismaClient): Promise<void> {
@@ -47,12 +49,15 @@ async function execute(prisma: PrismaClient): Promise<void> {
   });
 
   const users = await Promise.all(
-    USERS.map((user) =>
-      prisma.user.create({
-        data: {
-          email: user,
-        },
-      })
+    USER_IDS.map((userId) =>
+      generateUserPassword(userId).then((password) =>
+        prisma.user.create({
+          data: {
+            email: generateUserEmail(userId),
+            password,
+          },
+        })
+      )
     )
   );
 
@@ -83,4 +88,13 @@ async function createExampleDataForUser(
       ],
     }),
   ]);
+}
+
+function generateUserEmail(id: number): string {
+  return `u${padNonNegativeIntWithZeroes(id, 1)}@e.com`;
+}
+
+async function generateUserPassword(id: number): Promise<string> {
+  const plainTextPassword = `pass${padNonNegativeIntWithZeroes(id, 1)}`;
+  return hashPassword(plainTextPassword, SALT_ROUNDS);
 }

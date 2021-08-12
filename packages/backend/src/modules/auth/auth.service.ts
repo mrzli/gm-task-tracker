@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserService } from '../user/user.service';
+import { checkPassword } from '../../utils/password-utils';
 
 @Injectable()
 export class AuthService {
@@ -9,12 +10,13 @@ export class AuthService {
   public async validateUser(
     email: string,
     password: string
-  ): Promise<User | null> {
+  ): Promise<User | undefined> {
     const user = await this.userService.findOne(email);
     if (!user) {
-      return null;
+      return undefined;
     }
-    // check for password
-    return user;
+
+    const isPasswordMatch = await checkPassword(password, user.password);
+    return isPasswordMatch ? user : undefined;
   }
 }

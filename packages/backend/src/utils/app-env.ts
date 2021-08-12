@@ -10,6 +10,7 @@ export interface AppEnv {
   readonly GOOGLE_CLIENT_ID: string;
   readonly GOOGLE_SECRET: string;
   readonly GOOGLE_CALLBACK_URL: string;
+  readonly HASH_SALT_ROUNDS: string;
 }
 
 export function getAppEnv(): AppEnv {
@@ -25,5 +26,6 @@ export function getAppEnv(): AppEnv {
     GOOGLE_CLIENT_ID: process.env['GOOGLE_CLIENT_ID'] ?? '',
     GOOGLE_SECRET: process.env['GOOGLE_SECRET'] ?? '',
     GOOGLE_CALLBACK_URL: process.env['GOOGLE_CALLBACK_URL'] ?? '',
+    HASH_SALT_ROUNDS: process.env['HASH_SALT_ROUNDS'] ?? '',
   };
 }
