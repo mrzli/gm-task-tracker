@@ -9,4 +9,9 @@ export class AppController {
   public getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('example-protected')
+  public getExampleProtected(): string {
+    return 'example-protected';
+  }
 }
