@@ -1,4 +1,5 @@
 export interface AppEnv {
+  readonly NODE_ENV: string;
   readonly PORT: string;
   readonly EXAMPLE_ENV_VARIABLE: string;
   readonly DB_HOST: string;
@@ -15,6 +16,7 @@ export interface AppEnv {
 
 export function getAppEnv(): AppEnv {
   return {
+    NODE_ENV: process.env['NODE_ENV'] ?? '',
     PORT: process.env['PORT'] ?? '',
     EXAMPLE_ENV_VARIABLE: process.env['EXAMPLE_ENV_VARIABLE'] ?? '',
     DB_HOST: process.env['DB_HOST'] ?? '',

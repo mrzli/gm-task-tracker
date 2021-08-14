@@ -7,9 +7,10 @@ import { AuthController } from './auth.controller';
 import { LocalAuthGuard } from './local-auth.guard';
 import { ProviderKeyAuth } from './provider-key-auth';
 import { createAuthUtils } from './auth-utils';
+import { ConfigModule } from '../config/config.module';
 
 @Module({
-  imports: [UserModule, PassportModule],
+  imports: [ConfigModule, UserModule, PassportModule],
   providers: [
     AuthService,
     LocalStrategy,

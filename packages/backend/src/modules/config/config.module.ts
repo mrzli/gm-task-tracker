@@ -9,7 +9,7 @@ import { getAppEnv } from './app-env';
     ConfigService,
     {
       provide: ProviderKeyConfig.PROVIDER_KEY_CONFIG_APP_ENV,
-      useValue: getAppEnv(),
+      useFactory: () => getAppEnv(),
     },
   ],
   exports: [ConfigService],

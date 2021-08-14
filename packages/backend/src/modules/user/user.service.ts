@@ -1,9 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User, AuthToken } from '@prisma/client';
+import { AuthToken, User } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { ProviderKeyShared } from '../shared/provider-key-shared';
 import { DateTimeUtils } from '../shared/date-time-utils';
-import { millisecondSinceEpochToDate } from '@mrzli/gm-js-libraries-utilities/date';
+import {
+  addTime,
+  millisecondSinceEpochToDate,
+  TimeUnit,
+} from '@mrzli/gm-js-libraries-utilities/date';
 
 @Injectable()
 export class UserService {
@@ -30,13 +34,16 @@ export class UserService {
       },
     });
 
+    const currentDate = millisecondSinceEpochToDate(
+      this.dateTimeUtils.millisecondsSinceEpoch()
+    );
+    const expirationDate = addTime(currentDate, 1, TimeUnit.Day);
+
     return await this.databaseService.prismaClient.authToken.create({
       data: {
         userId,
         token,
-        expirationDate: millisecondSinceEpochToDate(
-          this.dateTimeUtils.millisecondsSinceEpoch() + 86_400_000 // TODO GM: change this, for now 1 day
-        ),
+        expirationDate,
       },
     });
   }

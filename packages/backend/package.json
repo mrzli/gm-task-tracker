@@ -26,7 +26,7 @@
     "db:seed": "prisma db seed --preview-feature"
   },
   "dependencies": {
-    "@mrzli/gm-js-libraries-utilities": "1.0.17",
+    "@mrzli/gm-js-libraries-utilities": "1.0.18",
     "@mrzli/gm-task-tracker-dtos": "1.0.0",
     "@nestjs/common": "8.0.6",
     "@nestjs/core": "8.0.6",
