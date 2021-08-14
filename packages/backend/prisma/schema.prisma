@@ -12,7 +12,7 @@ model User {
   id         Int         @id @default(autoincrement())
   email      String      @unique @db.VarChar(256)
   password   String      @db.VarChar(256)
-  roles      UserRole[]
+  userRoles  UserRole[]
   tasks      Task[]
   authTokens AuthToken[]
 }
@@ -27,10 +27,10 @@ model UserRole {
 }
 
 model Role {
-  id          Int              @id @default(autoincrement())
-  name        String           @db.VarChar(128)
-  users       UserRole[]
-  permissions RolePermission[]
+  id              Int              @id @default(autoincrement())
+  name            String           @db.VarChar(128)
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
 }
 
 model RolePermission {
@@ -43,9 +43,9 @@ model RolePermission {
 }
 
 model Permission {
-  id    Int              @id @default(autoincrement())
-  name  String           @db.VarChar(128)
-  roles RolePermission[]
+  id              Int              @id @default(autoincrement())
+  name            String           @db.VarChar(128)
+  rolePermissions RolePermission[]
 }
 
 model AuthToken {

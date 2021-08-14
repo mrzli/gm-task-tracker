@@ -7,6 +7,7 @@ import { getAppEnv } from './modules/config/app-env';
 import { parseInteger } from '@mrzli/gm-js-libraries-utilities/number';
 import { DatabaseService } from './modules/database/database.service';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
 function setupEnv(): void {
   const env = dotenv.config();
@@ -23,6 +24,7 @@ async function bootstrap(): Promise<void> {
   app.enableCors();
   app.setGlobalPrefix('api');
   app.use(helmet());
+  app.use(cookieParser());
   const databaseService: DatabaseService = app.get(DatabaseService);
   databaseService.enableShutdownHooks(app);
 

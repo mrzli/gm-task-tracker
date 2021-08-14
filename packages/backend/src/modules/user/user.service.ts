@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AuthToken, User } from '@prisma/client';
+import { AuthToken, Permission, User } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { ProviderKeyShared } from '../shared/provider-key-shared';
 import { DateTimeUtils } from '../shared/date-time-utils';
@@ -8,6 +8,7 @@ import {
   millisecondSinceEpochToDate,
   TimeUnit,
 } from '@mrzli/gm-js-libraries-utilities/date';
+import { asChainable } from '@mrzli/gm-js-libraries-utilities/fluent';
 
 @Injectable()
 export class UserService {
@@ -22,6 +23,41 @@ export class UserService {
       where: { email },
     });
     return result ?? undefined;
+  }
+
+  public async findPermissionsByToken(
+    token: string
+  ): Promise<readonly Permission[]> {
+    const results = await this.databaseService.prismaClient.authToken.findMany({
+      where: {
+        token,
+      },
+      include: {
+        user: {
+          include: {
+            userRoles: {
+              include: {
+                role: {
+                  include: {
+                    rolePermissions: {
+                      include: {
+                        permission: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return asChainable(results)
+      .flatMap((item) => item.user.userRoles)
+      .flatMap((item) => item.role.rolePermissions)
+      .map((item) => item.permission)
+      .getValue();
   }
 
   public async createAccessToken(

@@ -2,6 +2,9 @@ import { PrismaClient, Role, User } from '@prisma/client';
 import { padNonNegativeIntWithZeroes } from '@mrzli/gm-js-libraries-utilities/number';
 import { fillArrayOfLengthWithValueMapper } from '@mrzli/gm-js-libraries-utilities/array';
 import { createAuthUtils } from '../src/modules/auth/auth-utils';
+import { PermissionName } from '../src/modules/database/enums/permission-name';
+import { RoleName } from '../src/modules/database/enums/role-name';
+import { getEnumValues } from '@mrzli/gm-js-libraries-utilities/enum';
 
 const prisma = new PrismaClient();
 const SALT_ROUNDS = 12; // warning, should be the same as in env variable
@@ -15,8 +18,8 @@ execute(prisma)
     await prisma.$disconnect();
   });
 
-const PERMISSIONS: readonly string[] = ['USER', 'ADMIN'];
-const ROLES: readonly string[] = ['USER', 'ADMIN'];
+const PERMISSIONS: readonly string[] = getEnumValues(PermissionName);
+const ROLES: readonly string[] = getEnumValues(RoleName);
 
 const USER_IDS: readonly number[] = fillArrayOfLengthWithValueMapper(
   3,
