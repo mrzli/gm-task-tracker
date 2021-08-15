@@ -6,14 +6,16 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+import { User as DbUser } from '@prisma/client';
+import { User } from '@mrzli/gm-task-tracker-dtos';
 import { Request, Response } from 'express';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
-import { User as DbUser } from '@prisma/client';
 import { ConfigService } from '../config/config.service';
 import { ENV_DEVELOPMENT } from '../config/constants';
 import { AUTH_COOKIE_NAME } from './constants';
 import { RoutePublic } from '../app/route-any-public.decorator';
+import { objectOmitFields } from '@mrzli/gm-js-libraries-utilities/object';
 
 @Controller({ path: 'auth' })
 export class AuthController {
@@ -28,7 +30,7 @@ export class AuthController {
   public async login(
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response
-  ): Promise<DbUser> {
+  ): Promise<User> {
     const user = getUser(request);
     const authToken = await this.authService.createAuthToken(user);
     response.cookie(AUTH_COOKIE_NAME, authToken.token, {
@@ -37,7 +39,7 @@ export class AuthController {
       expires: authToken.expirationDate,
     });
 
-    return user;
+    return objectOmitFields(user, ['password']);
   }
 }
 
