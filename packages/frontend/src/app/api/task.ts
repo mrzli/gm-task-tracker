@@ -1,4 +1,4 @@
-import { Task } from '@mrzli/gm-task-tracker-dtos/task/task';
+import { Task } from '@mrzli/gm-task-tracker-dtos';
 import { restApi } from './base/rest-api';
 
 export interface TaskApi {

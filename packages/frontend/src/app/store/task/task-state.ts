@@ -1,4 +1,4 @@
-import { Task } from '@mrzli/gm-task-tracker-dtos/task/task';
+import { Task } from '@mrzli/gm-task-tracker-dtos';
 
 export interface TaskState {
   readonly isLoading: boolean;

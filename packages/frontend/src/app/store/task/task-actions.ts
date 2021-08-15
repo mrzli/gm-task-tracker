@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { AppActionType } from '../base/app-action-type';
 import { AppActionBase } from '../base/app-action-base';
 import { AppAction } from '../base/app-action';
-import { Task } from '@mrzli/gm-task-tracker-dtos/task/task';
+import { Task } from '@mrzli/gm-task-tracker-dtos';
 
 export interface TaskActions {
   readonly getTasks: () => void;

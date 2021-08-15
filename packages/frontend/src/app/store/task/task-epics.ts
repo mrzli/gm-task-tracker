@@ -11,7 +11,7 @@ import { AppActionType } from '../base/app-action-type';
 import { apiRequestHandler } from '../base/epic-utils';
 import { Observable } from 'rxjs';
 import { AppAction } from '../base/app-action';
-import { Task } from '@mrzli/gm-task-tracker-dtos/task/task';
+import { Task } from '@mrzli/gm-task-tracker-dtos';
 
 const epicTaskGetTasks: AppEpic = (
   action$,
