@@ -1,8 +1,8 @@
 import { Controller, Get, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
-import { RoutePublic } from './route-any-public.decorator';
-import { RouteAnyPermissions } from './route-permissions.decorator';
+import { RoutePublic } from '../../decorators/route-public.decorator';
+import { RoutePermissionsOr } from '../../decorators/route-permissions-or.decorator';
 import { PermissionName } from '../database/enums/permission-name';
 
 @Controller({ path: 'app' })
@@ -15,7 +15,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @RouteAnyPermissions(PermissionName.USER)
+  @RoutePermissionsOr(PermissionName.USER)
   @Get('example-protected')
   public async getExampleProtected(@Req() request: Request): Promise<string> {
     return 'example-protected';

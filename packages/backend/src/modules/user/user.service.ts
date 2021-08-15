@@ -25,25 +25,36 @@ export class UserService {
     return result ?? undefined;
   }
 
-  public async findPermissionsByToken(
-    token: string
+  public async findUserByToken(token: string): Promise<User | undefined> {
+    const result = await this.databaseService.prismaClient.authToken.findUnique(
+      {
+        where: {
+          token,
+        },
+        include: {
+          user: true,
+        },
+      }
+    );
+
+    return result?.user ?? undefined;
+  }
+
+  public async findPermissionsByUserId(
+    userId: number
   ): Promise<readonly Permission[]> {
-    const results = await this.databaseService.prismaClient.authToken.findMany({
+    const results = await this.databaseService.prismaClient.user.findMany({
       where: {
-        token,
+        id: userId,
       },
       include: {
-        user: {
+        userRoles: {
           include: {
-            userRoles: {
+            role: {
               include: {
-                role: {
+                rolePermissions: {
                   include: {
-                    rolePermissions: {
-                      include: {
-                        permission: true,
-                      },
-                    },
+                    permission: true,
                   },
                 },
               },
@@ -54,7 +65,7 @@ export class UserService {
     });
 
     return asChainable(results)
-      .flatMap((item) => item.user.userRoles)
+      .flatMap((item) => item.userRoles)
       .flatMap((item) => item.role.rolePermissions)
       .map((item) => item.permission)
       .getValue();
@@ -64,11 +75,7 @@ export class UserService {
     userId: number,
     token: string
   ): Promise<AuthToken> {
-    await this.databaseService.prismaClient.authToken.deleteMany({
-      where: {
-        userId,
-      },
-    });
+    await this.deleteAccessTokensForUser(userId);
 
     const currentDate = millisecondSinceEpochToDate(
       this.dateTimeUtils.millisecondsSinceEpoch()
@@ -80,6 +87,14 @@ export class UserService {
         userId,
         token,
         expirationDate,
+      },
+    });
+  }
+
+  public async deleteAccessTokensForUser(userId: number): Promise<void> {
+    await this.databaseService.prismaClient.authToken.deleteMany({
+      where: {
+        userId,
       },
     });
   }

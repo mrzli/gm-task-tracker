@@ -28,8 +28,16 @@ export class AuthService {
     return isPasswordMatch ? user : undefined;
   }
 
+  public async findUserByToken(token: string): Promise<User | undefined> {
+    return this.userService.findUserByToken(token);
+  }
+
   public async createAuthToken(user: User): Promise<AuthToken> {
     const token = this.authUtils.generateAccessToken();
     return this.userService.createAccessToken(user.id, token);
+  }
+
+  public async deleteAccessTokensForUser(user: User): Promise<void> {
+    await this.userService.deleteAccessTokensForUser(user.id);
   }
 }
