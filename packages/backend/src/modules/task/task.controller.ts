@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { TaskService } from './task.service';
-import { Task } from '@mrzli/gm-task-tracker-dtos/task/task';
+import { Task } from '@mrzli/gm-task-tracker-dtos';
 
 @Controller({ path: 'task' })
 export class TaskController {

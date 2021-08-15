@@ -3,12 +3,16 @@ import { AuthToken, User } from '@prisma/client';
 import { UserService } from '../user/user.service';
 import { AuthUtils } from './auth-utils';
 import { ProviderKeyAuth } from './provider-key-auth';
+import { RegisterRequestData } from '@mrzli/gm-task-tracker-dtos';
+import { ConfigService } from '../config/config.service';
+import { parseInteger } from '@mrzli/gm-js-libraries-utilities/number';
 
 @Injectable()
 export class AuthService {
   public constructor(
     @Inject(ProviderKeyAuth.PROVIDER_KEY_AUTH_UTILS)
     private readonly authUtils: AuthUtils,
+    private readonly configService: ConfigService,
     private readonly userService: UserService
   ) {}
 
@@ -28,8 +32,15 @@ export class AuthService {
     return isPasswordMatch ? user : undefined;
   }
 
-  public async findUserByToken(token: string): Promise<User | undefined> {
-    return this.userService.findUserByToken(token);
+  public async registerUser(data: RegisterRequestData): Promise<User> {
+    const saltRounds = parseInteger(
+      this.configService.getAppEnv().HASH_SALT_ROUNDS
+    );
+    const hashedPassword = await this.authUtils.hashPassword(
+      data.password,
+      saltRounds
+    );
+    return this.userService.createUser(data.email, hashedPassword);
   }
 
   public async createAuthToken(user: User): Promise<AuthToken> {

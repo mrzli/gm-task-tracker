@@ -1,7 +1,7 @@
-import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthToken, User as DbUser } from '@prisma/client';
-import { User } from '@mrzli/gm-task-tracker-dtos';
-import { CookieOptions, Request, Response } from 'express';
+import { RegisterRequestData, User } from '@mrzli/gm-task-tracker-dtos';
+import { CookieOptions, Response } from 'express';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { ConfigService } from '../config/config.service';
@@ -18,6 +18,12 @@ export class AuthController {
     private readonly configService: ConfigService,
     private readonly authService: AuthService
   ) {}
+
+  @RoutePublic()
+  @Post('register')
+  public async register(@Body() data: RegisterRequestData): Promise<User> {
+    return this.authService.registerUser(data);
+  }
 
   @RoutePublic()
   @UseGuards(LocalAuthGuard)

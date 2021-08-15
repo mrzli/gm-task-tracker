@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@mrzli/gm-js-libraries-utilities": "1.0.22",
-    "@mrzli/gm-task-tracker-dtos": "1.0.3",
+    "@mrzli/gm-task-tracker-dtos": "1.0.4",
     "@nestjs/common": "8.0.6",
     "@nestjs/core": "8.0.6",
     "@nestjs/passport": "8.0.1",

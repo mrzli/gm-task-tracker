@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { AuthToken, Permission, User } from '@prisma/client';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { AuthToken, Permission, Prisma, User } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { ProviderKeyShared } from '../shared/provider-key-shared';
 import { DateTimeUtils } from '../shared/date-time-utils';
@@ -9,6 +9,8 @@ import {
   TimeUnit,
 } from '@mrzli/gm-js-libraries-utilities/date';
 import { asChainable } from '@mrzli/gm-js-libraries-utilities/fluent';
+import { PrimaErrorCodePrismaClient } from '../database/enums/prima-error-codes';
+import { ErrorMessageIdentifier } from '../../utils/error-message-identifier';
 
 @Injectable()
 export class UserService {
@@ -17,6 +19,26 @@ export class UserService {
     private readonly dateTimeUtils: DateTimeUtils,
     private readonly databaseService: DatabaseService
   ) {}
+
+  public async createUser(email: string, password: string): Promise<User> {
+    try {
+      return await this.databaseService.prismaClient.user.create({
+        data: {
+          email,
+          password,
+        },
+      });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === PrimaErrorCodePrismaClient.UNIQUE_CONSTRAINT_ERROR) {
+          throw new BadRequestException(
+            ErrorMessageIdentifier.RegisterUserEmailAlreadyExits
+          );
+        }
+      }
+      throw e;
+    }
+  }
 
   public async findUser(email: string): Promise<User | undefined> {
     const result = await this.databaseService.prismaClient.user.findUnique({
