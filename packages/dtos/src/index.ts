@@ -1,2 +1,4 @@
-export { User } from './user/user';
-export { Task } from './task/task';
+export { RegisterRequestData } from './request/register-request-data';
+
+export { User } from './response/user';
+export { Task } from './response/task';

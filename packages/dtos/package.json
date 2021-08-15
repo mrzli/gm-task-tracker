@@ -1,7 +1,7 @@
 {
   "name": "@mrzli/gm-task-tracker-dtos",
   "description": "Data transfer objects for gm-task-tracker.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "goran.mrzljak@gmail.com",
   "repository": {
     "type": "git",
