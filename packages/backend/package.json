@@ -43,7 +43,9 @@
     "passport-local": "1.0.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
-    "rxjs": "7.3.0"
+    "rxjs": "7.3.0",
+    "validator": "13.6.0",
+    "zod": "3.7.2"
   },
   "devDependencies": {
     "@nestjs/cli": "8.1.1",
@@ -56,6 +58,7 @@
     "@types/node": "16.6.1",
     "@types/passport-local": "1.0.34",
     "@types/supertest": "2.0.11",
+    "@types/validator": "13.6.3",
     "@typescript-eslint/eslint-plugin": "4.29.1",
     "@typescript-eslint/parser": "4.29.1",
     "eslint": "7.32.0",

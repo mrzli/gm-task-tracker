@@ -11,6 +11,8 @@ import { RoutePublic } from '../../decorators/route-public.decorator';
 import { objectOmitFields } from '@mrzli/gm-js-libraries-utilities/object';
 import { RouteAnyAuthenticated } from '../../decorators/route-any-authenticated.decorator';
 import { ParamUser } from '../../decorators/param-user.decorator';
+import { ZodValidationPipe } from '../../pipes/zod-validation.pipe';
+import { registerRequestDataValidationSchema } from '../../utils/validators/auth/register-request-data-validation-schema';
 
 @Controller({ path: 'auth' })
 export class AuthController {
@@ -21,7 +23,10 @@ export class AuthController {
 
   @RoutePublic()
   @Post('register')
-  public async register(@Body() data: RegisterRequestData): Promise<User> {
+  public async register(
+    @Body(new ZodValidationPipe(registerRequestDataValidationSchema))
+    data: RegisterRequestData
+  ): Promise<User> {
     return this.authService.registerUser(data);
   }
 

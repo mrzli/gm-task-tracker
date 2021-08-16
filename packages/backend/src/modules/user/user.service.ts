@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AuthToken, Permission, Prisma, User } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { ProviderKeyShared } from '../shared/provider-key-shared';
@@ -10,7 +10,9 @@ import {
 } from '@mrzli/gm-js-libraries-utilities/date';
 import { asChainable } from '@mrzli/gm-js-libraries-utilities/fluent';
 import { PrimaErrorCodePrismaClient } from '../database/enums/prima-error-codes';
-import { ErrorMessageIdentifier } from '../../utils/error-message-identifier';
+import { createBadRequestException } from '../../utils/errors/error-factories';
+import { AppErrorType } from '../../utils/errors/enums/app-error-type';
+import { AppErrorTypeDb } from '../../utils/errors/enums/app-error-type-db';
 
 @Injectable()
 export class UserService {
@@ -31,9 +33,12 @@ export class UserService {
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === PrimaErrorCodePrismaClient.UNIQUE_CONSTRAINT_ERROR) {
-          throw new BadRequestException(
-            ErrorMessageIdentifier.RegisterUserEmailAlreadyExits
-          );
+          throw createBadRequestException({
+            appErrorType: AppErrorType.Db,
+            dbErrorType: AppErrorTypeDb.UniqueConstraintViolated,
+            model: 'User',
+            field: 'email',
+          });
         }
       }
       throw e;
