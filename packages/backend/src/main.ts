@@ -5,9 +5,7 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import { getAppEnv } from './modules/config/app-env';
 import { parseInteger } from '@mrzli/gm-js-libraries-utilities/number';
-import { DatabaseService } from './modules/database/database.service';
-import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
+import { setupApp } from './app-setup/app-setup';
 
 function setupEnv(): void {
   const env = dotenv.config();
@@ -21,12 +19,7 @@ async function bootstrap(): Promise<void> {
   const port = parseInteger(env.PORT);
 
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
-  app.setGlobalPrefix('api');
-  app.use(helmet());
-  app.use(cookieParser());
-  const databaseService: DatabaseService = app.get(DatabaseService);
-  databaseService.enableShutdownHooks(app);
+  setupApp(app);
 
   await app.listen(port);
 }

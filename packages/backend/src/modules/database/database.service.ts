@@ -15,6 +15,7 @@ export class DatabaseService implements OnModuleInit {
 
   public enableShutdownHooks(app: INestApplication): void {
     this._prismaClient.$on('beforeExit', async () => {
+      console.log('beforeExit');
       await app.close();
     });
   }
