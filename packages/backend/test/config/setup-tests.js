@@ -8,5 +8,6 @@ function setupEnv() {
 }
 
 module.exports = async () => {
+  console.log('Test setup started...');
   setupEnv();
 };
