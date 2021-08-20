@@ -5,6 +5,7 @@ module.exports = {
       tsConfig: '<rootDir>/tsconfig.json',
     },
   },
+  globalSetup: '<rootDir>/test/config/setup-tests.js',
   testEnvironment: 'node',
   testRegex: ['/(?:test)/.+\\.test\\.ts$'],
 };

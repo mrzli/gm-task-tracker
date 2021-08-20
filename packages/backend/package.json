@@ -8,10 +8,10 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start": "NODE_ENV=development nest start",
+    "start:dev": "NODE_ENV=development nest start --watch",
+    "start:debug": "NODE_ENV=development nest start --debug --watch",
+    "start:prod": "NODE_ENV=production node dist/main",
     "lint": "eslint --ext .ts,.tsx,.js .",
     "prettier": "prettier --check .",
     "prettier:write": "prettier --write .",
@@ -25,6 +25,7 @@
     "db:seed": "prisma db seed --preview-feature"
   },
   "dependencies": {
+    "@mrzli/gm-js-libraries-node-utils": "1.0.16",
     "@mrzli/gm-js-libraries-utilities": "1.0.22",
     "@mrzli/gm-task-tracker-dtos": "1.0.4",
     "@nestjs/common": "8.0.6",
