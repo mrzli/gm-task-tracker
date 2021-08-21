@@ -12,25 +12,31 @@ import {
 } from '../../utils/zod-utils';
 import { AppErrorType } from '../../../src/utils/errors/enums/app-error-type';
 import { PrismaClient } from '@prisma/client';
+import { StatusCodes } from 'http-status-codes';
+import { clearDb } from '../../../prisma/clear-db';
 
-describe('/api/auth/register (POST)', () => {
+const ENDPOINT_PATH = '/api/auth/register';
+
+describe(`${ENDPOINT_PATH} (POST)`, () => {
   let app: INestApplication;
-  let prismaClient: PrismaClient;
+  let prisma: PrismaClient;
 
   beforeEach(async () => {
-    prismaClient = new PrismaClient();
-    app = await createTestApp(prismaClient);
+    prisma = new PrismaClient();
+    app = await createTestApp(prisma);
   });
 
   afterEach(async () => {
-    await prismaClient.$disconnect();
+    await clearDb(prisma);
+    await prisma.$disconnect();
   });
 
+  const EXAMPLE_EMAIL = 'a@b.com';
   const VALID_PASSWORD = 'pass$1AA';
 
   function createDefaultRequest(): AnyObject {
     return {
-      email: 'a@b.com',
+      email: EXAMPLE_EMAIL,
       password: VALID_PASSWORD,
       confirmPassword: VALID_PASSWORD,
     };
@@ -88,10 +94,10 @@ describe('/api/auth/register (POST)', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         return request(app.getHttpServer())
-          .post('/api/auth/register')
+          .post(ENDPOINT_PATH)
           .send(example.input)
           .expect((response) => {
-            expect(response.status).toEqual(400);
+            expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
             expect(response.header['content-type']).not.toBeUndefined();
             expect(response.header['content-type']).toContain(
               'application/json'
@@ -102,4 +108,43 @@ describe('/api/auth/register (POST)', () => {
       });
     });
   });
+
+  // TODO GM: I think it is almost complete, need to seed the data with roles
+  // it('should work', async () => {
+  //   const result = await request(app.getHttpServer())
+  //     .post(ENDPOINT_PATH)
+  //     .send(createDefaultRequest())
+  //     .expect((response) => {
+  //       console.log(JSON.stringify(response, null, 2));
+  //       expect(response.status).toEqual(StatusCodes.CREATED);
+  //       expect(response.header['content-type']).not.toBeUndefined();
+  //       expect(response.header['content-type']).toContain('application/json');
+  //       const data = JSON.parse(response.text);
+  //       expect(data).toMatchObject({
+  //         id: expect.toBeNumber(),
+  //         email: EXAMPLE_EMAIL,
+  //       });
+  //       expect(data.password).toBeUndefined();
+  //     });
+  //
+  //   const id = JSON.parse(result.text).id;
+  //
+  //   const user = await prisma.user.findUnique({
+  //     where: { id },
+  //     include: {
+  //       userRoles: {
+  //         include: {
+  //           role: { include: { rolePermissions: { include: { role: true } } } },
+  //         },
+  //       },
+  //     },
+  //   });
+  //   expect(user).not.toBeNil();
+  //   expect(user).toMatchObject({
+  //     id: expect.toBeNumber(),
+  //     email: EXAMPLE_EMAIL,
+  //     password: VALID_PASSWORD,
+  //     permissions: [PermissionName.USER],
+  //   });
+  // });
 });

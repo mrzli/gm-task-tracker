@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AuthToken, Permission, Prisma, User } from '@prisma/client';
+import { AuthToken, Permission, Prisma, Role, User } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { ProviderKeyShared } from '../shared/provider-key-shared';
 import { DateTimeUtils } from '../shared/date-time-utils';
@@ -13,6 +13,7 @@ import { PrimaErrorCodePrismaClient } from '../database/enums/prima-error-codes'
 import { createBadRequestException } from '../../utils/errors/error-factories';
 import { AppErrorType } from '../../utils/errors/enums/app-error-type';
 import { AppErrorTypeDb } from '../../utils/errors/enums/app-error-type-db';
+import { RoleName } from '../database/enums/role-name';
 
 @Injectable()
 export class UserService {
@@ -22,12 +23,22 @@ export class UserService {
     private readonly databaseService: DatabaseService
   ) {}
 
-  public async createUser(email: string, password: string): Promise<User> {
+  public async createUser(
+    email: string,
+    password: string,
+    roleNames: readonly RoleName[]
+  ): Promise<User> {
     try {
+      const roles = await this.getRolesFromNames(roleNames);
       return await this.databaseService.prismaClient.user.create({
         data: {
           email,
           password,
+          userRoles: {
+            create: roles.map((role) => ({
+              role: { connect: { id: role.id } },
+            })),
+          },
         },
       });
     } catch (e) {
@@ -43,6 +54,14 @@ export class UserService {
       }
       throw e;
     }
+  }
+
+  public async getRolesFromNames(
+    roleNames: readonly RoleName[]
+  ): Promise<readonly Role[]> {
+    return this.databaseService.prismaClient.role.findMany({
+      where: { name: { in: roleNames.map((item) => item as string) } },
+    });
   }
 
   public async findUser(email: string): Promise<User | undefined> {

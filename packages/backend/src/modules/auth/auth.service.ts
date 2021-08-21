@@ -6,6 +6,7 @@ import { ProviderKeyAuth } from './provider-key-auth';
 import { RegisterRequestData } from '@mrzli/gm-task-tracker-dtos';
 import { ConfigService } from '../config/config.service';
 import { parseInteger } from '@mrzli/gm-js-libraries-utilities/number';
+import { RoleName } from '../database/enums/role-name';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +33,10 @@ export class AuthService {
     return isPasswordMatch ? user : undefined;
   }
 
-  public async registerUser(data: RegisterRequestData): Promise<User> {
+  public async registerUser(
+    data: RegisterRequestData,
+    roleNames: readonly RoleName[]
+  ): Promise<User> {
     const saltRounds = parseInteger(
       this.configService.getAppEnv().HASH_SALT_ROUNDS
     );
@@ -40,7 +44,7 @@ export class AuthService {
       data.password,
       saltRounds
     );
-    return this.userService.createUser(data.email, hashedPassword);
+    return this.userService.createUser(data.email, hashedPassword, roleNames);
   }
 
   public async createAuthToken(user: User): Promise<AuthToken> {

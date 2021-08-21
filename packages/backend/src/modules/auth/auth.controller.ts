@@ -13,6 +13,7 @@ import { RouteAnyAuthenticated } from '../../decorators/route-any-authenticated.
 import { ParamUser } from '../../decorators/param-user.decorator';
 import { ZodValidationPipe } from '../../pipes/zod-validation.pipe';
 import { registerRequestDataValidationSchema } from '../../utils/validators/auth/register-request-data-validation-schema';
+import { RoleName } from '../database/enums/role-name';
 
 @Controller({ path: 'auth' })
 export class AuthController {
@@ -27,7 +28,8 @@ export class AuthController {
     @Body(new ZodValidationPipe(registerRequestDataValidationSchema))
     data: RegisterRequestData
   ): Promise<User> {
-    return this.authService.registerUser(data);
+    const user = await this.authService.registerUser(data, [RoleName.USER]);
+    return dbUserToDtosUser(user);
   }
 
   @RoutePublic()
@@ -44,7 +46,7 @@ export class AuthController {
       getAuthCookieOptions(this.configService, authToken)
     );
 
-    return objectOmitFields(user, ['password']);
+    return dbUserToDtosUser(user);
   }
 
   @RouteAnyAuthenticated()
@@ -70,4 +72,8 @@ function getAuthCookieOptions(
     httpOnly: true,
     expires: authToken?.expirationDate,
   };
+}
+
+function dbUserToDtosUser(user: DbUser): User {
+  return objectOmitFields(user, ['password']);
 }

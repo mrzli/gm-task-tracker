@@ -5,6 +5,7 @@ import { createAuthUtils } from '../src/modules/auth/auth-utils';
 import { PermissionName } from '../src/modules/database/enums/permission-name';
 import { RoleName } from '../src/modules/database/enums/role-name';
 import { getEnumValues } from '@mrzli/gm-js-libraries-utilities/enum';
+import { clearDb } from './clear-db';
 
 const prisma = new PrismaClient();
 const SALT_ROUNDS = 12; // warning, should be the same as in env variable
@@ -29,13 +30,7 @@ const USER_IDS: readonly number[] = fillArrayOfLengthWithValueMapper(
 const authUtils = createAuthUtils();
 
 async function execute(prisma: PrismaClient): Promise<void> {
-  await prisma.task.deleteMany();
-
-  await prisma.rolePermission.deleteMany();
-  await prisma.userRole.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.role.deleteMany();
-  await prisma.permission.deleteMany();
+  await clearDb(prisma);
 
   const permissions = await Promise.all(
     PERMISSIONS.map((permission) =>

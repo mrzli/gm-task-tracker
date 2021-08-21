@@ -8,6 +8,7 @@ module.exports = {
   },
   globalSetup: '<rootDir>/test/config/setup-tests.js',
   globalTeardown: '<rootDir>/test/config/teardown-tests.js',
+  setupFilesAfterEnv: ['jest-extended'],
   testEnvironment: 'node',
   testRegex: ['/(?:test)/.+\\.test\\.ts$'],
 };

@@ -28,7 +28,7 @@ model UserRole {
 
 model Role {
   id              Int              @id @default(autoincrement())
-  name            String           @db.VarChar(128)
+  name            String           @unique @db.VarChar(128)
   userRoles       UserRole[]
   rolePermissions RolePermission[]
 }
@@ -44,7 +44,7 @@ model RolePermission {
 
 model Permission {
   id              Int              @id @default(autoincrement())
-  name            String           @db.VarChar(128)
+  name            String           @unique @db.VarChar(128)
   rolePermissions RolePermission[]
 }
 
