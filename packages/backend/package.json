@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "start:watch": "node src/app.js",
+    "lint": "eslint --ext .js .",
+    "prettier": "prettier --check .",
+    "prettier:write": "prettier --write .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mrzli/gm-js-libraries-utilities": "1.0.22",
+    "express": "4.17.1",
+    "mongodb": "4.1.1"
+  },
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "2.24.2",
+    "eslint-plugin-prettier": "4.0.0",
+    "prettier": "2.3.2"
+  }
+}
