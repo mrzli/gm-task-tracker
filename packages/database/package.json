@@ -1,0 +1,28 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "migrations": "node src/base/migrations.js",
+    "migrations:all": "npm run migrations -- --all",
+    "lint": "eslint --ext .js .",
+    "prettier": "prettier --check .",
+    "prettier:write": "prettier --write ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mrzli/gm-js-libraries-utilities": "1.0.23",
+    "commander": "8.1.0",
+    "glob": "7.1.7",
+    "mongodb": "4.1.1"
+  },
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "2.24.2",
+    "eslint-plugin-prettier": "4.0.0",
+    "prettier": "2.3.2"
+  }
+}
