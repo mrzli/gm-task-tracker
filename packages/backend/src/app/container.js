@@ -1,24 +1,31 @@
 const awilix = require('awilix');
 const { asValue, Lifetime, asClass, asFunction } = require('awilix');
 const { configOptions } = require('./config');
-const { App } = require('./app');
-const { createRouteResolver } = require('../routes/route-resolver');
+const { AppWrapper } = require('./app');
+const {
+  createRouteResolverFactory,
+} = require('../routes/route-resolver-factory');
 const { DbProvider } = require('../shared/db-provider');
 const {
   DOMAIN_NAME_ENUM,
   DOMAIN_NAME_LIST,
-} = require('../domains/_shared/domain-names');
+} = require('../domains/_shared/domain-name');
+const { createControllerFactory } = require('../shared/controller-factory');
+const { createAuthService } = require('../domains/auth/auth-service');
 
 async function createContainer() {
   const container = awilix.createContainer();
 
   container.register({ configOptions: asValue(configOptions) });
 
+  const singleton = { lifetime: Lifetime.SINGLETON };
+
   container.register({
-    routeResolver: asFunction(createRouteResolver, {
-      lifetime: Lifetime.SINGLETON,
-    }),
-    app: asClass(App, { lifetime: Lifetime.SINGLETON }),
+    appWrapper: asClass(AppWrapper, singleton),
+    app: asFunction(({ appWrapper }) => appWrapper.app, singleton),
+    routeResolverFactory: asFunction(createRouteResolverFactory, singleton),
+    controllerFactory: asFunction(createControllerFactory, singleton),
+    authService: asFunction(createAuthService, singleton),
   });
 
   const dbProviders = await createDbProviders(container);
@@ -31,7 +38,7 @@ async function createDbProviders(container) {
   const dbProviders = {};
   for (const domainName of DOMAIN_NAME_LIST) {
     dbProviders[`${domainName}DbProvider`] = asValue(
-      await createDbProvider(container.cradle, DOMAIN_NAME_ENUM.example)
+      await createDbProvider(container.cradle, domainName)
     );
   }
   return dbProviders;

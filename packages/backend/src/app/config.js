@@ -1,4 +1,4 @@
-const { DOMAIN_NAME_LIST } = require('../domains/_shared/domain-names');
+const { DOMAIN_NAME_LIST } = require('../domains/_shared/domain-name');
 const DB_HOST = 'localhost';
 const DB_PORT = 27017;
 const DB_NAME_BASE = 'task-tracker';
@@ -14,7 +14,7 @@ const domainDbNamesConfig = DOMAIN_NAME_LIST.reduce(
 
 const configOptions = {
   port: 4000,
-  routePrefix: '/api',
+  apiPrefix: '/api',
   dbHost: DB_HOST,
   dbPort: DB_PORT,
   dbServerUrl: `mongodb://${DB_HOST}:${DB_PORT}`,

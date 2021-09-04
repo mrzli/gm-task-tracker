@@ -2,17 +2,19 @@ const express = require('express');
 const {
   initializeExampleController,
 } = require('../domains/example/example-controller');
+const { initializeAuthController } = require('../domains/auth/auth-controller');
 
-class App {
-  constructor(cradle) {
-    this._cradle = cradle;
+class AppWrapper {
+  constructor({ configOptions }) {
+    this._configOptions = configOptions;
+  }
+
+  get app() {
+    return this._app;
   }
 
   async initialize() {
-    const app = express();
-    initializeExampleController(app, this._cradle);
-
-    this._app = app;
+    this._app = express();
   }
 
   async start() {
@@ -22,12 +24,12 @@ class App {
       );
     }
 
-    const port = this._cradle.configOptions.port;
+    const port = this._configOptions.port;
     await this._app.listen(port);
     console.log(`Server listening on port '${port}'`);
   }
 }
 
 module.exports = {
-  App,
+  AppWrapper,
 };
