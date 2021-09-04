@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "migrations": "node src/base/migrations.js",
-    "migrations:all": "npm run migrations -- --all",
+    "migrations:reset": "npm run migrations -- --reset",
     "lint": "eslint --ext .js .",
     "prettier": "prettier --check .",
     "prettier:write": "prettier --write ."

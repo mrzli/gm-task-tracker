@@ -8,6 +8,9 @@ const { configOptions } = require('../utils/config');
 const { MongoClient } = require('mongodb');
 const { getDatabaseName } = require('../utils/utils');
 const { program } = require('commander');
+const {
+  DOMAIN_NAME_LIST,
+} = require('../../../backend/src/domains/_shared/domain-name');
 
 const glob = (pattern, options) =>
   new Promise((resolve, reject) => {
@@ -24,11 +27,23 @@ const METADATA_DATABASE_NAME = 'meta';
 const METADATA_COLLECTION = 'db-metadata';
 
 async function runMigrations() {
-  program.option('-a, --all', 'execute all migrations');
+  program.option('-r, --reset', 'reset database');
   program.parse(process.argv);
   const options = program.opts();
+  console.log(options);
 
-  const db = await getDb();
+  const client = new MongoClient(configOptions.dbServerUrl);
+  await client.connect();
+  const db = client.db(getDatabaseName(METADATA_DATABASE_NAME));
+
+  if (options.reset) {
+    console.log('Resetting database...');
+    await db.dropDatabase();
+    for (const domainName of DOMAIN_NAME_LIST) {
+      await client.db(getDatabaseName(domainName)).dropDatabase();
+    }
+  }
+
   const metadataEntry = await getMetadataEntry(db);
   const currentDbVersion = metadataEntry ? metadataEntry.version || 0 : 0;
 
@@ -39,8 +54,8 @@ async function runMigrations() {
   );
 
   for (const migration of sortedMigrations) {
-    if (options.all || migration.version > currentDbVersion) {
-      console.log(migration.version);
+    if (migration.version > currentDbVersion) {
+      await migration.migrate(client);
     }
   }
 
@@ -67,12 +82,6 @@ async function runMigrations() {
   }
 }
 
-async function getDb() {
-  const client = new MongoClient(configOptions.dbServerUrl);
-  await client.connect();
-  return client.db(getDatabaseName(METADATA_DATABASE_NAME));
-}
-
 async function getMetadataEntry(db) {
   const metadataEntries = await db
     .collection(METADATA_COLLECTION)
@@ -82,7 +91,11 @@ async function getMetadataEntry(db) {
   return metadataEntries.length > 0 ? metadataEntries[0] : undefined;
 }
 
-runMigrations().finally(() => {
-  console.log('Migrations ran.');
-  process.exit(0);
-});
+runMigrations()
+  .catch((error) => {
+    console.error(error);
+  })
+  .finally(() => {
+    console.log('Migrations ran.');
+    process.exit(0);
+  });
