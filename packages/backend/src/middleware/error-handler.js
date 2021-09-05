@@ -1,9 +1,11 @@
 const { StatusCodes, ReasonPhrases } = require('http-status-codes');
 const { MongoServerError } = require('mongodb');
+const { ZodError } = require('zod');
 
-function initializeErrorHandler({ app, logger }) {
-  app.use((error, req, res, next) => {
-    logger.error('Error: ', error);
+function initializeErrorHandler({ app, logger, exceptionHandler }) {
+  app.use((error, req, res, _next) => {
+    const result = exceptionHandler.handle(error);
+    res.status(result.status).json(result.data);
   });
 
   process.on('uncaughtException', function (error) {
@@ -26,7 +28,16 @@ function createExceptionHandler({ logger }) {
 
   function handle(error) {
     logger.error('Exception: ', error);
-    if (error instanceof MongoServerError) {
+    if (error instanceof ZodError) {
+      const { name, ...errorData } = error;
+      return {
+        status: StatusCodes.BAD_REQUEST,
+        data: {
+          error: name,
+          ...errorData,
+        },
+      };
+    } else if (error instanceof MongoServerError) {
       switch (error.code) {
         case 11000:
           return {

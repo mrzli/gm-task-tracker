@@ -11,7 +11,13 @@ class AppWrapper {
   }
 
   async initialize() {
-    this._app = express();
+    const app = express();
+
+    // required for making request.body work
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+
+    this._app = app;
   }
 
   async start() {

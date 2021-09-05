@@ -6,7 +6,7 @@ function initializeExampleController({ controllerFactory, exampleDbProvider }) {
     {
       method: HTTP_VERB_ENUM.get,
       route: '/get',
-      middlewares: undefined,
+      middleware: undefined,
       handler: async (req, res) => {
         const data = await exampleDbProvider.db
           .collection('Example')
@@ -18,7 +18,7 @@ function initializeExampleController({ controllerFactory, exampleDbProvider }) {
     {
       method: HTTP_VERB_ENUM.post,
       route: '/insert',
-      middlewares: undefined,
+      middleware: undefined,
       handler: async (req, res) => {
         await exampleDbProvider.db
           .collection('Example')
