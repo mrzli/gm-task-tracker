@@ -1,12 +1,9 @@
 const express = require('express');
-const {
-  initializeExampleController,
-} = require('../domains/example/example-controller');
-const { initializeAuthController } = require('../domains/auth/auth-controller');
 
 class AppWrapper {
-  constructor({ configOptions }) {
+  constructor({ configOptions, logger }) {
     this._configOptions = configOptions;
+    this._logger = logger;
   }
 
   get app() {
@@ -26,7 +23,7 @@ class AppWrapper {
 
     const port = this._configOptions.port;
     await this._app.listen(port);
-    console.log(`Server listening on port '${port}'`);
+    this._logger.info(`Server listening on port '${port}'`);
   }
 }
 

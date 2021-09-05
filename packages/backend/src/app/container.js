@@ -6,12 +6,11 @@ const {
   createRouteResolverFactory,
 } = require('../routes/route-resolver-factory');
 const { DbProvider } = require('../shared/db-provider');
-const {
-  DOMAIN_NAME_ENUM,
-  DOMAIN_NAME_LIST,
-} = require('../domains/_shared/domain-name');
+const { DOMAIN_NAME_LIST } = require('../domains/_shared/domain-name');
 const { createControllerFactory } = require('../shared/controller-factory');
 const { createAuthService } = require('../domains/auth/auth-service');
+const { Logger } = require('../logging/logger');
+const { createExceptionHandler } = require('../middleware/error-handler');
 
 async function createContainer() {
   const container = awilix.createContainer();
@@ -23,6 +22,8 @@ async function createContainer() {
   container.register({
     appWrapper: asClass(AppWrapper, singleton),
     app: asFunction(({ appWrapper }) => appWrapper.app, singleton),
+    logger: asClass(Logger, singleton),
+    exceptionHandler: asFunction(createExceptionHandler, singleton),
     routeResolverFactory: asFunction(createRouteResolverFactory, singleton),
     controllerFactory: asFunction(createControllerFactory, singleton),
     authService: asFunction(createAuthService, singleton),

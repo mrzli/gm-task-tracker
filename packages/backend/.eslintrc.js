@@ -14,5 +14,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:prettier/recommended',
   ],
-  rules: {},
+  rules: {
+    'no-console': 'error',
+  },
 };
