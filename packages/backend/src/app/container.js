@@ -11,6 +11,7 @@ const { createControllerFactory } = require('../shared/controller-factory');
 const { createAuthService } = require('../domains/auth/auth-service');
 const { Logger } = require('../logging/logger');
 const { createExceptionHandler } = require('../middleware/error-handler');
+const { createAuthUtils } = require('../domains/auth/auth-utils');
 
 async function createContainer() {
   const container = awilix.createContainer();
@@ -27,6 +28,7 @@ async function createContainer() {
     routeResolverFactory: asFunction(createRouteResolverFactory, singleton),
     controllerFactory: asFunction(createControllerFactory, singleton),
     authService: asFunction(createAuthService, singleton),
+    authUtils: asFunction(createAuthUtils, singleton),
   });
 
   const dbProviders = await createDbProviders(container);

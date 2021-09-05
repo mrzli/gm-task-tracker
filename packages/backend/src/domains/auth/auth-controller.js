@@ -1,7 +1,7 @@
 const { DOMAIN_NAME_ENUM } = require('../_shared/domain-name');
 const { HTTP_VERB_ENUM } = require('../_shared/http-verb');
 const { z } = require('zod');
-const validator = require('validator');
+// const validator = require('validator');
 
 function initializeAuthController({ controllerFactory, authService }) {
   const endpoints = [
@@ -13,14 +13,11 @@ function initializeAuthController({ controllerFactory, authService }) {
           body: z
             .object({
               email: z.string().min(1).max(256).email(),
-              password: z
-                .string()
-                .min(1)
-                .max(256)
-                .refine(
-                  (v) => validator.isStrongPassword(v),
-                  'NotStrongPassword'
-                ),
+              password: z.string().min(1).max(256),
+              // .refine(
+              //   (v) => validator.isStrongPassword(v),
+              //   'NotStrongPassword'
+              // ),
               confirmPassword: z.string().min(1).max(256),
             })
             .strict()

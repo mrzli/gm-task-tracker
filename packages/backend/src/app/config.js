@@ -19,6 +19,7 @@ const configOptions = {
   dbPort: DB_PORT,
   dbServerUrl: `mongodb://${DB_HOST}:${DB_PORT}`,
   domainDbNamesConfig,
+  hashSaltRounds: 12,
 };
 
 module.exports = { configOptions };
