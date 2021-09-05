@@ -13,5 +13,11 @@ module.exports = {
     await authDb
       .collection(AUTH_COLLECTION_NAME_ENUM.user)
       .createIndex({ email: 1 }, { unique: true });
+    await authDb
+      .collection(AUTH_COLLECTION_NAME_ENUM.token)
+      .createIndex({ userId: 1 }, { unique: true });
+    await authDb
+      .collection(AUTH_COLLECTION_NAME_ENUM.token)
+      .createIndex({ token: 1 });
   },
 };

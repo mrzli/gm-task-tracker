@@ -13,6 +13,7 @@ const domainDbNamesConfig = DOMAIN_NAME_LIST.reduce(
 );
 
 const configOptions = {
+  nodeEnv: process.env.NODE_ENV,
   port: 4000,
   apiPrefix: '/api',
   dbHost: DB_HOST,

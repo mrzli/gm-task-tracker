@@ -1,12 +1,16 @@
 const { DOMAIN_NAME_ENUM } = require('../_shared/domain-name');
 const { HTTP_VERB_ENUM } = require('../_shared/http-verb');
+const { ENDPOINT_AUTH_TYPE_ENUM } = require('../../shared/endpoint-auth-type');
 
 function initializeExampleController({ controllerFactory, exampleDbProvider }) {
   const endpoints = [
     {
       method: HTTP_VERB_ENUM.get,
       route: '/get',
-      middleware: undefined,
+      auth: {
+        type: ENDPOINT_AUTH_TYPE_ENUM.public,
+      },
+      validators: undefined,
       handler: async (req, res) => {
         const data = await exampleDbProvider.db
           .collection('Example')
@@ -18,7 +22,10 @@ function initializeExampleController({ controllerFactory, exampleDbProvider }) {
     {
       method: HTTP_VERB_ENUM.post,
       route: '/insert',
-      middleware: undefined,
+      auth: {
+        type: ENDPOINT_AUTH_TYPE_ENUM.public,
+      },
+      validators: undefined,
       handler: async (req, res) => {
         await exampleDbProvider.db
           .collection('Example')

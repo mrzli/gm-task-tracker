@@ -4,14 +4,17 @@ const { configOptions } = require('./config');
 const { AppWrapper } = require('./app');
 const {
   createRouteResolverFactory,
-} = require('../routes/route-resolver-factory');
+} = require('../shared/route-resolver-factory');
 const { DbProvider } = require('../shared/db-provider');
 const { DOMAIN_NAME_LIST } = require('../domains/_shared/domain-name');
 const { createControllerFactory } = require('../shared/controller-factory');
 const { createAuthService } = require('../domains/auth/auth-service');
-const { Logger } = require('../logging/logger');
-const { createExceptionHandler } = require('../middleware/error-handler');
+const { Logger } = require('../shared/logger');
+const { createExceptionHandler } = require('../shared/error-handler');
 const { createAuthUtils } = require('../domains/auth/auth-utils');
+const { createDateTimeUtils } = require('../shared/date-time-utils');
+const { createUserService } = require('../domains/auth/user-service');
+const { createTokenService } = require('../domains/auth/token-service');
 
 async function createContainer() {
   const container = awilix.createContainer();
@@ -27,8 +30,12 @@ async function createContainer() {
     exceptionHandler: asFunction(createExceptionHandler, singleton),
     routeResolverFactory: asFunction(createRouteResolverFactory, singleton),
     controllerFactory: asFunction(createControllerFactory, singleton),
+    dateTimeUtils: asFunction(createDateTimeUtils, singleton),
+    // auth
     authService: asFunction(createAuthService, singleton),
     authUtils: asFunction(createAuthUtils, singleton),
+    userService: asFunction(createUserService, singleton),
+    tokenService: asFunction(createTokenService, singleton),
   });
 
   const dbProviders = await createDbProviders(container);

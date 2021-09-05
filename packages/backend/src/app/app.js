@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 class AppWrapper {
   constructor({ configOptions, logger }) {
@@ -15,6 +16,7 @@ class AppWrapper {
 
     // required for making request.body work
     app.use(express.urlencoded({ extended: true }));
+    app.use(cookieParser());
     app.use(express.json());
 
     this._app = app;

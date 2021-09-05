@@ -1,6 +1,7 @@
 const { StatusCodes, ReasonPhrases } = require('http-status-codes');
 const { MongoServerError } = require('mongodb');
 const { ZodError } = require('zod');
+const { ServerError } = require('./errors');
 
 function initializeErrorHandler({ app, logger, exceptionHandler }) {
   app.use((error, req, res, _next) => {
@@ -50,6 +51,8 @@ function createExceptionHandler({ logger }) {
         default:
           return INTERNAL_SERVER_ERROR;
       }
+    } else if (error instanceof ServerError) {
+      return error;
     } else {
       return INTERNAL_SERVER_ERROR;
     }

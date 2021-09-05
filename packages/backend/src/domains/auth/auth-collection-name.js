@@ -1,5 +1,6 @@
 const AUTH_COLLECTION_NAME_ENUM = Object.freeze({
   user: 'user',
+  token: 'token',
 });
 const AUTH_COLLECTION_NAME_LIST = Object.keys(AUTH_COLLECTION_NAME_ENUM);
 

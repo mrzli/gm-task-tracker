@@ -1,47 +1,40 @@
 const {
   createValidationMiddleware,
   REQUEST_PART_ENUM,
-} = require('../middleware/validation');
+} = require('./validation');
+const { createAuthMiddleware } = require('../domains/auth/auth-middleware');
 
-function createControllerFactory({
-  app,
-  logger,
-  routeResolverFactory,
-  exceptionHandler,
-}) {
+function createControllerFactory(cradle) {
   return {
     create: (controllerName, endpoints) =>
-      createController(
-        app,
-        logger,
-        routeResolverFactory,
-        exceptionHandler,
-        controllerName,
-        endpoints
-      ),
+      createController(cradle, controllerName, endpoints),
   };
 }
 
-function createController(
-  app,
-  logger,
-  routeResolverFactory,
-  exceptionHandler,
-  controllerName,
-  endpoints
-) {
-  const routeResolver = routeResolverFactory.create(controllerName);
+function createController(cradle, controllerName, endpoints) {
+  const routeResolver = cradle.routeResolverFactory.create(controllerName);
 
   for (const endpoint of endpoints) {
-    addEndpoint(app, routeResolver, exceptionHandler, endpoint);
+    addEndpoint(cradle, routeResolver, endpoint);
   }
 }
 
-function addEndpoint(app, routeResolver, exceptionHandler, endpoint) {
-  const middleware = endpoint.middleware || {};
-  const validators = middleware.validators || {};
+function addEndpoint(cradle, routeResolver, endpoint) {
+  const { app, exceptionHandler, userService } = cradle;
 
-  const validatorMiddlewares = [
+  const route = routeResolver.resolve(endpoint.route);
+
+  const auth = endpoint.auth;
+  if (!auth || !auth.type) {
+    throw new Error(
+      `Need to specify endpoint auth type. Endpoint route: '${route}'`
+    );
+  }
+
+  const validators = endpoint.validators || {};
+
+  const middlewares = [
+    createAuthMiddleware(auth.type, userService),
     validators.body
       ? createValidationMiddleware(validators.body, {
           part: REQUEST_PART_ENUM.body,
@@ -73,18 +66,14 @@ function addEndpoint(app, routeResolver, exceptionHandler, endpoint) {
       : undefined,
   ].filter((item) => item !== undefined);
 
-  app[endpoint.method](
-    routeResolver.resolve(endpoint.route),
-    ...validatorMiddlewares,
-    async (req, res, next) => {
-      try {
-        await endpoint.handler(req, res, next);
-      } catch (error) {
-        const result = exceptionHandler.handle(error);
-        res.status(result.status).json(result.data);
-      }
+  app[endpoint.method](route, ...middlewares, async (req, res, next) => {
+    try {
+      await endpoint.handler(req, res, next);
+    } catch (error) {
+      const result = exceptionHandler.handle(error);
+      res.status(result.status).json(result.data);
     }
-  );
+  });
 }
 
 module.exports = {

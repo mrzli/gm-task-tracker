@@ -4,7 +4,7 @@ const {
   initializeExampleController,
 } = require('../domains/example/example-controller');
 const { initializeAuthController } = require('../domains/auth/auth-controller');
-const { initializeErrorHandler } = require('../middleware/error-handler');
+const { initializeErrorHandler } = require('../shared/error-handler');
 
 async function initializeContainerAndStartApp() {
   const container = await createContainer();
