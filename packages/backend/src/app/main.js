@@ -5,6 +5,7 @@ const {
 } = require('../domains/example/example-controller');
 const { initializeAuthController } = require('../domains/auth/auth-controller');
 const { initializeErrorHandler } = require('../shared/error-handler');
+const { initializeTaskController } = require('../domains/task/task-controller');
 
 async function initializeContainerAndStartApp() {
   const container = await createContainer();
@@ -20,7 +21,11 @@ async function startApp(container) {
 }
 
 function initializeControllers(container) {
-  const controllers = [initializeExampleController, initializeAuthController];
+  const controllers = [
+    initializeExampleController,
+    initializeAuthController,
+    initializeTaskController,
+  ];
   controllers.forEach((controller) => {
     controller(container);
   });

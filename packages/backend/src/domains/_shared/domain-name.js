@@ -1,6 +1,7 @@
 const DOMAIN_NAME_ENUM = Object.freeze({
-  auth: 'auth',
   example: 'example',
+  auth: 'auth',
+  task: 'task',
 });
 const DOMAIN_NAME_LIST = Object.keys(DOMAIN_NAME_ENUM);
 

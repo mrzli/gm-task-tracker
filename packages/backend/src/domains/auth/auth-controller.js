@@ -20,24 +20,22 @@ function initializeAuthController({
       auth: {
         type: ENDPOINT_AUTH_TYPE_ENUM.public,
       },
-      middleware: {
-        validators: {
-          body: z
-            .object({
-              email: z.string().min(1).max(256).email(),
-              password: z.string().min(1).max(256),
-              // .refine(
-              //   (v) => validator.isStrongPassword(v),
-              //   'NotStrongPassword'
-              // ),
-              confirmPassword: z.string().min(1).max(256),
-            })
-            .strict()
-            .refine(
-              (v) => v.password === v.confirmPassword,
-              'PasswordsDontMatch'
-            ),
-        },
+      validators: {
+        body: z
+          .object({
+            email: z.string().min(1).max(256).email(),
+            password: z.string().min(1).max(256),
+            // .refine(
+            //   (v) => validator.isStrongPassword(v),
+            //   'NotStrongPassword'
+            // ),
+            confirmPassword: z.string().min(1).max(256),
+          })
+          .strict()
+          .refine(
+            (v) => v.password === v.confirmPassword,
+            'PasswordsDontMatch'
+          ),
       },
       handler: async (req, res) => {
         const result = await authService.register(req.body);
