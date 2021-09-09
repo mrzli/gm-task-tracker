@@ -1,36 +1,25 @@
 {
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
-    // output
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "declaration": true,
-
-    // compilation
-    "module": "CommonJS",
-    "removeComments": true,
-    "target": "ES6",
-
-    // checks
+    "module": "esnext",
+    "target": "es6",
+    "noEmit": true,
+    "jsx": "react-jsx",
     "strict": true,
-
-    // module resolution
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-
-    // typing
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "typeRoots": ["./node_modules/@types/"],
-
-    // linting
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "isolatedModules": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-
-    // advanced
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   }

@@ -11,9 +11,9 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && tsc && cp package.json dist",
-    "lint": "eslint --ext .ts .",
-    "prettier": "prettier --check .",
-    "prettier:write": "prettier --write ."
+    "lint": "eslint --ext .ts ",
+    "prettier": "prettier --check ",
+    "prettier:write": "prettier --write "
   },
   "dependencies": {},
   "devDependencies": {

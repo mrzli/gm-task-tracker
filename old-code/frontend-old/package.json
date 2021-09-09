@@ -7,9 +7,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .ts,.tsx,.js .",
-    "prettier": "prettier --check .",
-    "prettier:write": "prettier --write ."
+    "lint": "eslint --ext .ts,.tsx,.js ",
+    "prettier": "prettier --check ",
+    "prettier:write": "prettier --write "
   },
   "dependencies": {
     "@emotion/react": "11.4.1",
