@@ -1,10 +1,7 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { List, ListItem, ListItemText } from '@mui/material';
 import { ROUTE_DATA } from '../../app/routing/route-data';
-
-// interface MainMenuProps {
-//   readonly onNavigate: (url: string) => void;
-// }
 
 export function MainMenu({ onNavigate }) {
   const onNavigateList = useMemo(() => {
@@ -29,3 +26,7 @@ export function MainMenu({ onNavigate }) {
     </List>
   );
 }
+
+MainMenu.propTypes = {
+  onNavigate: PropTypes.func.isRequired,
+};
