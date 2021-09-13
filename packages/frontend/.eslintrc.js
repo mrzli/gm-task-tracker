@@ -27,5 +27,14 @@ module.exports = {
         argsIgnorePattern: '^_',
       },
     ],
+    'react/prop-types': 'error',
   },
+  overrides: [
+    {
+      files: ['**/*.stories.js'],
+      rules: {
+        'import/no-anonymous-default-export': 'off',
+      },
+    },
+  ],
 };
