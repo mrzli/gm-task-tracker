@@ -4,7 +4,6 @@ import { TextField } from '@mui/material';
 import './FormTextInput.scss';
 
 export function FormTextInput({ formItem, fieldRenderInputData }) {
-  console.log(fieldRenderInputData);
   const { label, type } = formItem.data.input;
   const { field, fieldState /*, formState */ } = fieldRenderInputData;
   const { onChange, onBlur, value, name, ref } = field;

@@ -37,13 +37,18 @@ const FORM_DATA = {
 };
 
 export function LoginForm({ onSubmit }) {
-  const [form] = useFormBuilder(FORM_DATA, onSubmit);
+  const [form, formState] = useFormBuilder(FORM_DATA, onSubmit);
 
   return (
     <div>
       {form}
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button type={'submit'} variant={'contained'} form={FORM_DATA.formId}>
+        <Button
+          type={'submit'}
+          variant={'contained'}
+          form={FORM_DATA.formId}
+          disabled={!formState.isValid}
+        >
           Login
         </Button>
       </Box>
