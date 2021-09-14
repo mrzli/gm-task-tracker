@@ -3,23 +3,38 @@ import { createContainer, asFunction, asValue, Lifetime } from 'awilix';
 import { FormRow } from '../form/FormRow';
 import { FormTextInput } from '../form/FormTextInput';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { transformIfExists } from '@mrzli/gm-js-libraries-utilities/mapping';
 
 const FORM_CONTROL_BUILDER_PREFIX = 'formControlBuilder';
 
 export function useFormBuilder(formSchema, onSubmit) {
-  const { control, handleSubmit } = useForm();
+  const { control, formState, handleSubmit } = useForm({
+    mode: 'all',
+    resolver: transformIfExists(
+      formSchema.validationSchema,
+      zodResolver,
+      undefined
+    ),
+  });
 
   const container = useMemo(() => createMyContainer(control), [control]);
 
-  return useMemo(() => {
+  const form = useMemo(() => {
     console.log('redraw!!!!!');
     const formBuilder = container.resolve('formBuilder');
     return (
-      <form id={formSchema.formId} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        id={formSchema.formId}
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate={true}
+      >
         {formBuilder.build(formSchema)}
       </form>
     );
-  }, [formSchema, handleSubmit, onSubmit, container]);
+  }, [container, formSchema, handleSubmit, onSubmit]);
+
+  return [form, formState];
 }
 
 function createMyContainer(control) {
@@ -47,24 +62,38 @@ export function createFormBuilder(cradle) {
         const itemBuilder =
           cradle[`${FORM_CONTROL_BUILDER_PREFIX}${formItem.type}`];
         const rowBuilder = cradle.formRowBuilder;
-        return rowBuilder.build(formItem.key, itemBuilder.build(formItem.data));
+        return rowBuilder.build(formItem, itemBuilder);
       });
     },
   };
 }
 
-function createFormRowBuilder() {
+function createFormRowBuilder({ control }) {
   return {
-    build: (key, wrappedComponent) => {
-      return <FormRow key={key}>{wrappedComponent}</FormRow>;
+    build: (formItem, itemBuilder) => {
+      return (
+        <FormRow
+          key={formItem.name}
+          control={control}
+          formItem={formItem}
+          renderControl={(formItem, fieldRenderInputData) =>
+            itemBuilder.build(formItem, fieldRenderInputData)
+          }
+        />
+      );
     },
   };
 }
 
-function createFormControlBuilderTextInput({ control }) {
+function createFormControlBuilderTextInput() {
   return {
-    build: (data) => {
-      return <FormTextInput control={control} {...data.input} />;
+    build: (formItem, fieldRenderInputData) => {
+      return (
+        <FormTextInput
+          formItem={formItem}
+          fieldRenderInputData={fieldRenderInputData}
+        />
+      );
     },
   };
 }

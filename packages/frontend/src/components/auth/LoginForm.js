@@ -2,37 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useFormBuilder } from '../shared/form-builder/form-builder';
 import { Box, Button } from '@mui/material';
+import { z } from 'zod';
 
 const FORM_DATA = {
   formId: 'loginForm',
   items: [
     {
-      key: 'email',
+      name: 'email',
       type: 'TextInput',
       data: {
         input: {
           type: 'email',
-          name: 'email',
           label: 'Email',
         },
       },
     },
     {
-      key: 'password',
+      name: 'password',
       type: 'TextInput',
       data: {
         input: {
           type: 'password',
-          name: 'password',
           label: 'Password',
         },
       },
     },
   ],
+  validationSchema: z
+    .object({
+      email: z.string().min(1).email(),
+      password: z.string().min(1),
+    })
+    .strict(),
 };
 
 export function LoginForm({ onSubmit }) {
-  const form = useFormBuilder(FORM_DATA, onSubmit);
+  const [form] = useFormBuilder(FORM_DATA, onSubmit);
+
   return (
     <div>
       {form}

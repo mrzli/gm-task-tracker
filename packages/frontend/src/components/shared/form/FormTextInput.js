@@ -1,54 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Controller } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import './FormTextInput.scss';
 
-export function FormTextInput({ control, type, name, label, defaultValue }) {
+export function FormTextInput({ formItem, fieldRenderInputData }) {
+  console.log(fieldRenderInputData);
+  const { label, type } = formItem.data.input;
+  const { field, fieldState /*, formState */ } = fieldRenderInputData;
+  const { onChange, onBlur, value, name, ref } = field;
+  const { /* invalid, isTouched, isDirty, */ error } = fieldState;
+  // const {
+  //   isDirty: formIsDirty,
+  //   dirtyFields: formDirtyFields,
+  //   isSubmitted: formIsSubmitted,
+  //   isSubmitSuccessful: formIsSubmitSuccessful,
+  //   submitCount: formSubmitCount,
+  //   touchedFields: formTouchedFields,
+  //   isSubmitting: formIsSubmitting,
+  //   isValidating: formIsValidating,
+  //   isValid: formIsValid,
+  //   errors: formErrors,
+  // } = formState;
   return (
-    <Controller
-      control={control}
+    <TextField
+      className={'form-text-input--root'}
+      label={label}
+      type={type || 'text'}
+      ref={ref}
+      onChange={onChange}
+      onBlur={onBlur}
+      value={value}
       name={name}
-      defaultValue={defaultValue || ''}
-      render={({
-        field: { onChange, onBlur, value, name, ref },
-        // fieldState: { invalid, isTouched, isDirty, error },
-        // formState: {
-        //   isDirty: formIsDirty,
-        //   dirtyFields: formDirtyFields,
-        //   isSubmitted: formIsSubmitted,
-        //   isSubmitSuccessful: formIsSubmitSuccessful,
-        //   submitCount: formSubmitCount,
-        //   touchedFields: formTouchedFields,
-        //   isSubmitting: formIsSubmitting,
-        //   isValidating: formIsValidating,
-        //   isValid: formIsValid,
-        //   errors: formErrors,
-        // },
-      }) => {
-        return (
-          <TextField
-            className={'form-text-input--root'}
-            label={label}
-            type={type || 'text'}
-            ref={ref}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value}
-            name={name}
-            InputLabelProps={{ shrink: true }}
-          />
-        );
-      }}
+      error={error !== undefined}
+      InputLabelProps={{ shrink: true }}
     />
   );
 }
 
 FormTextInput.propTypes = {
-  control: PropTypes.any.isRequired,
-  type: PropTypes.oneOf(['text', 'email', 'password']),
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string,
-  isPassword: PropTypes.bool,
+  formItem: PropTypes.object.isRequired,
+  fieldRenderInputData: PropTypes.object.isRequired,
 };
