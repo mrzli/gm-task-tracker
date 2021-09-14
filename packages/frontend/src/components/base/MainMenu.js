@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { List, ListItem, ListItemText } from '@mui/material';
 import { ROUTE_DATA } from '../../app/routing/route-data';
 
+const MENU_ROUTES = ROUTE_DATA.filter((item) => item.hasMenuItem);
+
 export function MainMenu({ onNavigate }) {
   const onNavigateList = useMemo(() => {
-    return ROUTE_DATA.map((item) => {
+    return MENU_ROUTES.map((item) => {
       return () => {
         onNavigate(item.url);
       };
@@ -14,7 +16,7 @@ export function MainMenu({ onNavigate }) {
 
   return (
     <List>
-      {ROUTE_DATA.map((pair, index) => (
+      {MENU_ROUTES.map((pair, index) => (
         <ListItem
           key={index}
           sx={{ cursor: 'pointer' }}

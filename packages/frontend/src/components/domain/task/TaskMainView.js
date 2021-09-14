@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useAppActions } from '../../utils/hooks';
-import { createTaskActions } from '../../app/store/task/task-actions';
+import { useAppActions } from '../../../utils/hooks';
+import { createTaskActions } from '../../../app/store/task/task-actions';
 
 export function TaskMainView() {
   const taskState = useSelector((appState) => appState.task);
@@ -14,6 +14,7 @@ export function TaskMainView() {
 
   return (
     <div>
+      Tasks
       {taskState.tasks.map((task) => (
         <div key={task.id}>{task.text}</div>
       ))}
