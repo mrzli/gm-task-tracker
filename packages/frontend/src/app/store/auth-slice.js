@@ -63,7 +63,7 @@ export const authSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user;
+        state.user = action.payload;
       })
       .addCase(fetchUser.rejected, (state) => {
         state.isLoading = false;
@@ -72,5 +72,9 @@ export const authSlice = createSlice({
 });
 
 export const { clearRedirectToHome } = authSlice.actions;
+
+export const selectAuthData = (state) => state.auth;
+export const selectRedirectToHome = (state) => state.auth.redirectToHome;
+export const selectUser = (state) => state.auth.user;
 
 export const authReducer = authSlice.reducer;

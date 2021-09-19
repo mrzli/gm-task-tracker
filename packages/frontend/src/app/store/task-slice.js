@@ -33,4 +33,6 @@ export const taskSlice = createSlice({
 
 // export const { clearRedirectToHome } = taskSlice.actions;
 
+export const selectTasks = (state) => state.task.tasks;
+
 export const taskReducer = taskSlice.reducer;
