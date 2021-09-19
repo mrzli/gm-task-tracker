@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppContext } from './app-context';
 import { Provider } from 'react-redux';
-import { wrapWithTheme } from './create-app-theme';
+import { wrapWithTheme } from './app-theme';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
 export function wrapComponent(

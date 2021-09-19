@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from '../../components/App';
-import { wrapComponent } from './create-app-utils';
+import { wrapComponent } from './app-utils';
 import { createAppDependencies } from './app-dependencies';
-import { createInitialAppState } from '../store/base/app-state';
 import { createAppAllParameters } from './app-all-parameters';
 import { createAppGlobals } from './app-globals';
 import { reportWebVitals } from './report-web-vitals';
@@ -17,13 +16,8 @@ export function createApp() {
 
   const dependencies = createAppDependencies();
   const globals = createAppGlobals();
-  const initialAppState = createInitialAppState();
 
-  const appAllParameters = createAppAllParameters(
-    dependencies,
-    globals,
-    initialAppState
-  );
+  const appAllParameters = createAppAllParameters(dependencies, globals);
 
   return wrapComponent(
     component,

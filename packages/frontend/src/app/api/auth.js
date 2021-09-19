@@ -5,6 +5,7 @@ export function createAuthApi() {
     register,
     login,
     logout,
+    fetchUser,
   };
 }
 
@@ -20,5 +21,10 @@ async function login(data) {
 
 async function logout() {
   const response = await restApi.post('auth/logout');
+  return response.data;
+}
+
+async function fetchUser() {
+  const response = await restApi.get('auth/user');
   return response.data;
 }

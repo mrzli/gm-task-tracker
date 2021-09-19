@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppActions } from '../../../utils/hooks';
-import { createTaskActions } from '../../../app/store/task/task-actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasks } from '../../../app/store/task-slice';
 
 export function TaskMainView() {
   const authState = useSelector((appState) => appState.auth);
   const { user } = authState;
   const taskState = useSelector((appState) => appState.task);
 
-  const taskActions = useAppActions(createTaskActions);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log('user', user);
     if (user) {
-      taskActions.getTasks(user._id);
+      dispatch(fetchTasks(user._id));
     }
-  }, [user, taskActions]);
+  }, [user, dispatch]);
 
   return (
     <div>
       Tasks
       {taskState.tasks.map((task) => (
-        <div key={task.id}>{task.text}</div>
+        <div key={task._id}>{task.text}</div>
       ))}
     </div>
   );

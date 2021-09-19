@@ -2,11 +2,11 @@ import { restApi } from './base/rest-api';
 
 export function createTaskApi() {
   return {
-    getTasks,
+    fetchTasks,
   };
 }
 
-async function getTasks(userId) {
+async function fetchTasks(userId) {
   const response = await restApi.get(`task/tasks/${userId}`);
   return response.data;
 }
