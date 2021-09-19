@@ -35,7 +35,8 @@ function createAuthMiddleware(type, userService) {
 }
 
 function getAuthToken(req) {
-  return req.cookies[AUTH_COOKIE_NAME];
+  // return req.cookies[AUTH_COOKIE_NAME];
+  return req.header(AUTH_COOKIE_NAME);
 }
 
 function setUserToRequest(req, user) {

@@ -15,6 +15,7 @@ const { createAuthUtils } = require('../domains/auth/auth-utils');
 const { createDateTimeUtils } = require('../shared/date-time-utils');
 const { createUserService } = require('../domains/auth/user-service');
 const { createTokenService } = require('../domains/auth/token-service');
+const { createTaskService } = require('../domains/task/task-service');
 
 async function createContainer() {
   const container = awilix.createContainer();
@@ -36,6 +37,8 @@ async function createContainer() {
     authUtils: asFunction(createAuthUtils, singleton),
     userService: asFunction(createUserService, singleton),
     tokenService: asFunction(createTokenService, singleton),
+    // task
+    taskService: asFunction(createTaskService, singleton),
   });
 
   const dbProviders = await createDbProviders(container);

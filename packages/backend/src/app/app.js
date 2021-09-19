@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 class AppWrapper {
@@ -14,8 +15,8 @@ class AppWrapper {
   async initialize() {
     const app = express();
 
-    // required for making request.body work
-    app.use(express.urlencoded({ extended: true }));
+    app.use(cors());
+    app.use(express.urlencoded({ extended: true })); // required for making request.body work
     app.use(cookieParser());
     app.use(express.json());
 

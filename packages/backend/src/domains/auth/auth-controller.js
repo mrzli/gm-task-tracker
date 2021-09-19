@@ -1,15 +1,13 @@
+const { z } = require('zod');
 const { DOMAIN_NAME_ENUM } = require('../_shared/domain-name');
 const { HTTP_VERB_ENUM } = require('../_shared/http-verb');
-const { z } = require('zod');
-const { NODE_ENV_PRODUCTION } = require('../../shared/constants');
 const { ENDPOINT_AUTH_TYPE_ENUM } = require('../../shared/endpoint-auth-type');
 const { sanitizeUser } = require('./utils');
-const { AUTH_COOKIE_NAME } = require('./constants');
 
 // const validator = require('validator');
 
 function initializeAuthController({
-  configOptions,
+  // configOptions,
   controllerFactory,
   authService,
 }) {
@@ -58,12 +56,16 @@ function initializeAuthController({
       },
       handler: async (req, res) => {
         const result = await authService.login(req.body);
-        res.cookie(
-          AUTH_COOKIE_NAME,
-          result.token.token,
-          getAuthCookieOptions(configOptions, result.token)
-        );
-        res.json(sanitizeUser(result.user));
+        // res.cookie(
+        //   AUTH_COOKIE_NAME,
+        //   result.token.token,
+        //   getAuthCookieOptions(configOptions, result.token)
+        // );
+        const responseJson = {
+          token: result.token.token,
+          user: sanitizeUser(result.user),
+        };
+        res.json(responseJson);
       },
     },
     {
@@ -74,7 +76,7 @@ function initializeAuthController({
       },
       validators: {},
       handler: async (req, res) => {
-        res.clearCookie(AUTH_COOKIE_NAME);
+        // res.clearCookie(AUTH_COOKIE_NAME);
         await authService.logout(req.user);
         res.end();
       },
@@ -84,12 +86,12 @@ function initializeAuthController({
   controllerFactory.create(DOMAIN_NAME_ENUM.auth, endpoints);
 }
 
-function getAuthCookieOptions(configOptions, token) {
-  return {
-    secure: configOptions.nodeEnv === NODE_ENV_PRODUCTION,
-    httpOnly: true,
-    expires: token.expirationDate,
-  };
-}
+// function getAuthCookieOptions(configOptions, token) {
+//   return {
+//     secure: configOptions.nodeEnv === NODE_ENV_PRODUCTION,
+//     httpOnly: true,
+//     expires: token.expirationDate,
+//   };
+// }
 
 module.exports = { initializeAuthController };
