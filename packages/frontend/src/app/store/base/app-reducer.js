@@ -1,6 +1,6 @@
-import { exampleReducer } from '../example/example-reducer';
-import { taskReducer } from '../task/task-reducer';
-import { authReducer } from '../auth/auth-reducer';
+import { exampleReducer } from './example-slice';
+import { taskReducer } from './task/task-reducer';
+import { authReducer } from './auth/auth-reducer';
 
 export function createAppReducer() {
   return {

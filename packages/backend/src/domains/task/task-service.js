@@ -7,9 +7,11 @@ function createTaskService({ taskDbProvider }) {
   };
 
   async function getTasksByUserId(userId) {
-    return getTaskCollection(taskDbProvider).find({
-      userId: new ObjectId(userId),
-    });
+    return getTaskCollection(taskDbProvider)
+      .find({
+        userId: new ObjectId(userId),
+      })
+      .toArray();
   }
 }
 

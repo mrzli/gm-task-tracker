@@ -4,7 +4,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import { createAppEpic } from '../store/base/app-epic';
 import { createAppReducer } from '../store/base/app-reducer';
 
-export function createAppStore(dependencies, initialAppState) {
+export function appStore(dependencies, initialAppState) {
   const appReducer = combineReducers(createAppReducer());
   const { enhancer, epicMiddleware } = createStoreEnhancer(dependencies);
 

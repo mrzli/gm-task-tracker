@@ -81,6 +81,17 @@ function initializeAuthController({
         res.end();
       },
     },
+    {
+      method: HTTP_VERB_ENUM.get,
+      route: '/user',
+      auth: {
+        type: ENDPOINT_AUTH_TYPE_ENUM.anyUser,
+      },
+      validators: undefined,
+      handler: async (req, res) => {
+        res.json(req.user);
+      },
+    },
   ];
 
   controllerFactory.create(DOMAIN_NAME_ENUM.auth, endpoints);

@@ -11,7 +11,7 @@ function initializeErrorHandler({ app, logger, exceptionHandler }) {
 
   process.on('uncaughtException', function (error) {
     logger.error('Uncaught Exception', error);
-    process.exit(1);
+    // process.exit(1);
   });
 }
 
