@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
+import { useEffect } from 'react';
 import { ROUTE_DATA } from '../../app/routing/route-data';
-import { AppContext } from '../../app/setup/app-context';
+import { useNavigate } from 'react-router-dom';
 import { useActiveRoute } from '../../hooks/active-route';
 
 export function ScreenRoutes() {
-  const context = useContext(AppContext);
-  const location = context.dependencies.locationWrapper;
-  const activeRoute = useActiveRoute(location, ROUTE_DATA);
+  const navigate = useNavigate();
+  const activeRoute = useActiveRoute(ROUTE_DATA);
 
-  if (!activeRoute) {
-    location.setPathname('');
-    return <div />;
-  }
+  useEffect(() => {
+    if (!activeRoute) {
+      navigate('/');
+    }
+  }, [navigate, activeRoute]);
 
-  return <div>{activeRoute.element}</div>;
+  return activeRoute.element;
 }

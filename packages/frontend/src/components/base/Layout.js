@@ -1,27 +1,26 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { AppBar, Box, Drawer, Toolbar } from '@mui/material';
 import { ScreenRoutes } from './ScreenRoutes';
 import { MainMenu } from './MainMenu';
 import { Header } from './Header';
-import { AppContext } from '../../app/setup/app-context';
 import { useActiveRoute } from '../../hooks/active-route';
 import { ROUTE_DATA } from '../../app/routing/route-data';
+import { useNavigate } from 'react-router-dom';
 
 const MAIN_MENU_WIDTH = 200;
 
 export function Layout() {
-  const context = useContext(AppContext);
-  const location = context.dependencies.locationWrapper;
-  const activeRoute = useActiveRoute(location, ROUTE_DATA);
+  const navigate = useNavigate();
+  const activeRoute = useActiveRoute(ROUTE_DATA);
 
   const onNavigate = useCallback(
     (url) => {
-      location.setPathname(url);
+      navigate(url);
     },
-    [location]
+    [navigate]
   );
 
-  const menuWidth = activeRoute.showMenu ? MAIN_MENU_WIDTH : 0;
+  const menuWidth = showMenu(activeRoute) ? MAIN_MENU_WIDTH : 0;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -34,7 +33,7 @@ export function Layout() {
       >
         <Header />
       </AppBar>
-      {activeRoute.showMenu && (
+      {showMenu(activeRoute) && (
         <Drawer
           sx={{
             width: MAIN_MENU_WIDTH,
@@ -56,4 +55,8 @@ export function Layout() {
       </Box>
     </Box>
   );
+}
+
+function showMenu(activeRoute) {
+  return activeRoute && activeRoute.showMenu;
 }

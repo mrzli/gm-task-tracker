@@ -1,14 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { SingleItemOnPage } from '../layout/SingleItemOnPage';
 import { LoginForm } from './LoginForm';
 import { useSelector } from 'react-redux';
 import { useAppActions } from '../../utils/hooks';
 import { createAuthActions } from '../../app/store/auth/auth-actions';
-import { AppContext } from '../../app/setup/app-context';
+import { useNavigate } from 'react-router-dom';
 
 export function LoginMainView() {
-  const context = useContext(AppContext);
-  const history = context.dependencies.historyWrapper;
+  const navigate = useNavigate();
 
   const authState = useSelector((appState) => appState.auth);
   const { redirectToHome } = authState;
@@ -18,9 +17,9 @@ export function LoginMainView() {
   useEffect(() => {
     if (redirectToHome) {
       authActions.clearRedirectToHome();
-      history.push('/');
+      navigate('/');
     }
-  }, [redirectToHome, authActions, history]);
+  }, [redirectToHome, authActions, navigate]);
 
   function onSubmit(data) {
     authActions.login(data);

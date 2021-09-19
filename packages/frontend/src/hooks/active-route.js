@@ -1,12 +1,11 @@
-import { isRouteMatch } from '@mrzli/gm-js-libraries-navigation-utils';
 import { useMemo } from 'react';
+import { matchPath, useLocation } from 'react-router-dom';
 
-export function useActiveRoute(location, routeItems) {
-  const pathname = location.getPathname();
+export function useActiveRoute(routeItems) {
+  const { pathname } = useLocation();
   return useMemo(() => {
-    console.log('recalculating');
     return routeItems.find((item) =>
-      isRouteMatch(pathname, item.url, item.exact)
+      matchPath({ path: item.url, exact: item.exact }, pathname)
     );
   }, [pathname, routeItems]);
 }

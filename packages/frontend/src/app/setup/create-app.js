@@ -29,7 +29,8 @@ export function createApp() {
     component,
     appAllParameters.appContextData,
     appAllParameters.store,
-    appAllParameters.theme
+    appAllParameters.theme,
+    undefined
   );
 }
 
