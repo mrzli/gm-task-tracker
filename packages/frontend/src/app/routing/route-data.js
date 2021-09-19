@@ -11,6 +11,7 @@ const EXPLICIT_ROUTES = [
     element: <LoginMainView />,
     hasMenuItem: false,
     showMenu: false,
+    isProtected: false,
   },
   {
     label: 'Register',
@@ -19,6 +20,7 @@ const EXPLICIT_ROUTES = [
     element: <RegisterMainView />,
     hasMenuItem: false,
     showMenu: false,
+    isProtected: false,
   },
   {
     label: 'Tasks',
@@ -27,6 +29,7 @@ const EXPLICIT_ROUTES = [
     element: <TaskMainView />,
     hasMenuItem: true,
     showMenu: true,
+    isProtected: true,
   },
 ];
 

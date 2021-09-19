@@ -21,7 +21,7 @@ restApi.interceptors.request.use(async (request) => {
 });
 
 restApi.interceptors.response.use(identifyFn, (error) => {
-  if (error.status === StatusCodes.UNAUTHORIZED) {
+  if (error.response.status === StatusCodes.UNAUTHORIZED) {
     locationWrapper.setPathname('/login');
   }
 
