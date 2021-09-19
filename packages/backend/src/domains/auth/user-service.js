@@ -27,7 +27,7 @@ function createUserService({ authDbProvider, tokenService }) {
 
   async function getUserByToken(token) {
     const tokenObj = await tokenService.getTokenByToken(token);
-    return getUserById(tokenObj.userId);
+    return tokenObj ? getUserById(tokenObj.userId) : undefined;
   }
 }
 
