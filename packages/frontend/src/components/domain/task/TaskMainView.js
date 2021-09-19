@@ -4,13 +4,18 @@ import { useAppActions } from '../../../utils/hooks';
 import { createTaskActions } from '../../../app/store/task/task-actions';
 
 export function TaskMainView() {
+  const authState = useSelector((appState) => appState.auth);
+  const { user } = authState;
   const taskState = useSelector((appState) => appState.task);
 
   const taskActions = useAppActions(createTaskActions);
 
   useEffect(() => {
-    taskActions.getTasks();
-  }, [taskActions]);
+    console.log('user', user);
+    if (user) {
+      taskActions.getTasks(user._id);
+    }
+  }, [user, taskActions]);
 
   return (
     <div>

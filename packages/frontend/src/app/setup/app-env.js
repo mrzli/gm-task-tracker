@@ -5,6 +5,6 @@ export function getAppEnv() {
     PUBLIC_URL: process.env['PUBLIC_URL'] ?? '',
     REACT_APP_VERSION: process.env['REACT_APP_VERSION'] ?? '',
     REACT_APP_BASE_URL: process.env['REACT_APP_BASE_URL'] ?? '',
-    REACT_APP_REST_API: process.env['REACT_APP_REST_API_URL'] ?? '',
+    REACT_APP_REST_API_URL: process.env['REACT_APP_REST_API_URL'] ?? '',
   };
 }

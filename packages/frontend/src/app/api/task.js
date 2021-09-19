@@ -6,7 +6,7 @@ export function createTaskApi() {
   };
 }
 
-async function getTasks() {
-  const response = await restApi.get('task');
+async function getTasks(userId) {
+  const response = await restApi.get(`task/tasks/${userId}`);
   return response.data;
 }

@@ -37,6 +37,7 @@ const FORM_DATA = {
 };
 
 export function LoginForm({ onSubmit }) {
+  console.log('login form redraw');
   const [form, formState] = useFormBuilder(FORM_DATA, onSubmit);
 
   return (
