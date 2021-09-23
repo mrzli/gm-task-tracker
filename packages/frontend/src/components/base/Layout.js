@@ -99,6 +99,7 @@ function useMenuNavigate() {
 }
 
 function useNavigateToHomeIfInvalidUrl() {
+  const activeRoute = useActiveRoute(ROUTE_DATA);
   const navigate = useNavigate();
 
   useEffect(() => {
