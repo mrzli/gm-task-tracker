@@ -1,8 +1,9 @@
 import React from 'react';
 import { AppContext } from './app-context';
 import { Provider } from 'react-redux';
-import { wrapWithTheme } from './app-theme';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
 
 export function wrapComponent(
   component,
@@ -11,12 +12,14 @@ export function wrapComponent(
   theme,
   testRouteData
 ) {
-  const themeWrappedComponent = wrapWithTheme(component, theme);
-
   return (
     <AppContext.Provider value={appContextData}>
       <Provider store={store}>
-        {wrapWithRouter(themeWrappedComponent, testRouteData)}
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider>
+            {wrapWithRouter(component, testRouteData)}
+          </SnackbarProvider>
+        </ThemeProvider>
       </Provider>
     </AppContext.Provider>
   );

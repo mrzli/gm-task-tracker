@@ -10,42 +10,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, selectAuthData } from '../../app/store/auth-slice';
 import { LoadingOverlay } from '../shared/display/LoadingOverlay';
 import { emptyFn } from '@mrzli/gm-js-libraries-utilities/function';
+import { NotificationRenderer } from '../shared/notifications/NotificationRenderer';
 
 const MAIN_MENU_WIDTH = 200;
 
 export function Layout() {
-  const navigate = useNavigate();
-  const activeRoute = useActiveRoute(ROUTE_DATA);
+  useNavigateToHomeIfInvalidUrl();
+  useFetchUser();
+  const isLoading = useIsLoading();
+  const showMenu = useShowMenu();
+  const onNavigate = useMenuNavigate();
 
-  const authData = useSelector(selectAuthData);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!activeRoute) {
-      navigate('/');
-    }
-  }, [navigate, activeRoute]);
-
-  const onNavigate = useCallback(
-    (url) => {
-      navigate(url);
-    },
-    [navigate]
-  );
-
-  if (
-    !activeRoute ||
-    authData.isLoading ||
-    (!authData.user && activeRoute.isProtected)
-  ) {
+  if (isLoading) {
     return <LoadingOverlay onClose={emptyFn} isOpen={true} />;
   }
 
-  const menuWidth = showMenu(activeRoute) ? MAIN_MENU_WIDTH : 0;
+  const menuWidth = showMenu ? MAIN_MENU_WIDTH : 0;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -58,7 +38,7 @@ export function Layout() {
       >
         <Header />
       </AppBar>
-      {showMenu(activeRoute) && (
+      {showMenu && (
         <Drawer
           sx={{
             width: MAIN_MENU_WIDTH,
@@ -78,10 +58,52 @@ export function Layout() {
         <Toolbar />
         <ScreenRoutes />
       </Box>
+      <NotificationRenderer />
     </Box>
   );
 }
 
-function showMenu(activeRoute) {
+function useFetchUser() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+}
+
+function useIsLoading() {
+  const activeRoute = useActiveRoute(ROUTE_DATA);
+  const authData = useSelector(selectAuthData);
+
+  return (
+    !activeRoute ||
+    authData.isLoading ||
+    (!authData.user && activeRoute.isProtected)
+  );
+}
+
+function useShowMenu() {
+  const activeRoute = useActiveRoute(ROUTE_DATA);
   return activeRoute && activeRoute.showMenu;
+}
+
+function useMenuNavigate() {
+  const navigate = useNavigate();
+
+  return useCallback(
+    (url) => {
+      navigate(url);
+    },
+    [navigate]
+  );
+}
+
+function useNavigateToHomeIfInvalidUrl() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!activeRoute) {
+      navigate('/');
+    }
+  }, [navigate, activeRoute]);
 }
