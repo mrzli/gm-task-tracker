@@ -7,9 +7,9 @@
     "start": "NODE_ENV=development node src/app/main.js",
     "start:watch": "NODE_ENV=development nodemon src/app/main.js",
     "start:prod": "NODE_ENV=production node src/app/main.js",
-    "lint": "eslint --ext .js .",
-    "prettier": "prettier --check .",
-    "prettier:write": "prettier --write .",
+    "lint": "eslint --ext .js ",
+    "prettier": "prettier --check ",
+    "prettier:write": "prettier --write ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -8,9 +8,9 @@
     "migrations:reset": "npm run migrations -- --reset",
     "seed": "node src/base/seed.js",
     "seed:reset": "npm run migrations:reset && npm run seed",
-    "lint": "eslint --ext .js .",
-    "prettier": "prettier --check .",
-    "prettier:write": "prettier --write ."
+    "lint": "eslint --ext .js ",
+    "prettier": "prettier --check ",
+    "prettier:write": "prettier --write "
   },
   "author": "",
   "license": "ISC",

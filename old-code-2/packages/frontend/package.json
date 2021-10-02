@@ -6,9 +6,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "lint": "eslint --ext .js .",
-    "prettier": "prettier --check .",
-    "prettier:write": "prettier --write .",
+    "lint": "eslint --ext .js ",
+    "prettier": "prettier --check ",
+    "prettier:write": "prettier --write ",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
